@@ -22,7 +22,7 @@ function Header (props) {
       <AppBar position='static'>
         <Toolbar>
           <Typography variant='title' color='inherit' align='center' className={classes.flex}>
-            Demo Chat
+            Демо услуги
           </Typography>
           <Button color='inherit'>Login</Button>
         </Toolbar>
