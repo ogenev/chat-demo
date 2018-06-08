@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
   container: {
@@ -38,6 +39,7 @@ class RegisterForm extends React.Component {
     return (
       <Paper>
       <form className={classes.container} noValidate autoComplete="off">
+        <Grid container direction='column' alignItems='center'>
         <TextField
           id="email"
           label="Имейл адрес"
@@ -61,10 +63,13 @@ class RegisterForm extends React.Component {
           autoComplete="current-password"
           margin="normal"
         />
+        </Grid>
       </form>
+        <Grid container direction='column' alignItems='center'>
         <Button variant="contained" color="secondary" className={classes.button}>
           Регистрирай се
         </Button>
+        </Grid>
       </Paper>
     );
   }

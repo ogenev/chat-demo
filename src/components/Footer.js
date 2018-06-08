@@ -36,7 +36,7 @@ class Footer extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Grid container>
+        <Grid container alignItems='center'>
         <AppBar position="static" color="default">
           <Tabs
             value={value}
