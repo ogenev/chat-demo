@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
 import Footer from './Footer'
 
-const drawerWidth = 240;
+const drawerWidth = 130;
 
 const styles = theme => ({
   root: {
@@ -42,6 +42,7 @@ const styles = theme => ({
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
+    backgroundColor: '#e8eaf7',
     width: drawerWidth,
     [theme.breakpoints.up('md')]: {
       position: 'relative',
