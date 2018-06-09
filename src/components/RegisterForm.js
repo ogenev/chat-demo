@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid'
 
@@ -37,7 +36,7 @@ class RegisterForm extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Paper>
+      <Fragment>
       <form className={classes.container} noValidate autoComplete="off">
         <Grid container direction='column' alignItems='center'>
         <TextField
@@ -70,7 +69,7 @@ class RegisterForm extends React.Component {
           Регистрирай се
         </Button>
         </Grid>
-      </Paper>
+      </Fragment>
     );
   }
 }
