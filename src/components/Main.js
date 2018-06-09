@@ -1,17 +1,7 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
+import Routes from '../Routes'
 
 export default props =>
-  <Grid container>
-    <Grid item>
-      <Paper>
-      Main
-      </Paper>
-    </Grid>
-    <Grid item>
-      <Paper>
-        Main
-      </Paper>
-    </Grid>
-  </Grid>
+  <main>
+    <Routes />
+  </main>

@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
+import { Link } from 'react-router-dom'
 
 const styles = {
   root: {
@@ -15,6 +16,8 @@ const styles = {
   }
 }
 
+const RegisterLink = props => <Link to='/register' {...props} />
+
 function Header (props) {
   const { classes } = props
   return (
@@ -24,7 +27,7 @@ function Header (props) {
           <Typography variant='title' color='inherit' align='center' className={classes.flex}>
             Демо услуги
           </Typography>
-          <Button color='inherit'>Login</Button>
+          <Button color='inherit' component={RegisterLink} >Регистрирай се</Button>
         </Toolbar>
       </AppBar>
     </div>
