@@ -1,11 +1,19 @@
 import React from 'react';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import PhoneIcon from '@material-ui/icons/Phone';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-export default class Footer extends React.Component {
+const styles = {
+  root: {
+    width: '100%',
+  },
+};
+
+class Footer extends React.Component {
   state = {
     value: 0,
   };
@@ -15,19 +23,28 @@ export default class Footer extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
+    const { value } = this.state;
+
     return (
-        <Tabs
-          value={this.state.value}
-          onChange={this.handleChange}
-          fullWidth
-          indicatorColor="secondary"
-          textColor="secondary"
-          style={{position: 'absolute',bottom: 0, right: 80}}
-        >
-          <Tab icon={<PhoneIcon />} label="RECENTS" />
-          <Tab icon={<FavoriteIcon />} label="FAVORITES" />
-          <Tab icon={<PersonPinIcon />} label="NEARBY" />
-        </Tabs>
+      <BottomNavigation
+        value={value}
+        onChange={this.handleChange}
+        showLabels
+        className={classes.root}
+        style={{position: 'absolute',bottom: 0, right: 0}}
+      >
+        <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
+        <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+        <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+      </BottomNavigation>
     );
   }
 }
+
+Footer.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Footer);
+
