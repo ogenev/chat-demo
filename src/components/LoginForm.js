@@ -5,6 +5,22 @@ import { withStyles } from '@material-ui/core/styles/index'
 import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
+import firebase from 'firebase'
+import config from '../Firebase/config'
+
+firebase.initializeApp(config)
+const uiConfig = {
+  // Popup signin flow rather than redirect flow.
+  signInFlow: 'popup',
+  // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
+  signInSuccessUrl: '/home',
+  // We will display Google and Facebook as auth providers.
+  signInOptions: [
+    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID
+  ]
+}
 
 const styles = theme => ({
   container: {
@@ -63,6 +79,9 @@ class LoginForm extends React.Component {
           <Button variant="contained" color="primary" className={classes.button}>
             Вход
           </Button>
+          <div>
+            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
+          </div>
           <div style={{height: 20}}>
           </div>
           <Button variant='contained' color='secondary' component={Link} to='/register' >
