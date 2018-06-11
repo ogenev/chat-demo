@@ -83,7 +83,6 @@ class ResDrawer extends React.Component {
       </div>
     );
 
-    const RegisterLink = props => <Link to='/register' {...props} />
     const LoginLink = props => <Link to='/login' {...props} />
 
     return (
@@ -98,12 +97,6 @@ class ResDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Button
-              color='inherit'
-              component={RegisterLink}
-              style={{position: 'absolute',top: 10,left: 50}} >
-              Регистрирай се
-            </Button>
             <Button
               color='inherit'
               component={LoginLink}

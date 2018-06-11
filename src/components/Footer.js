@@ -6,6 +6,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeIcon from '@material-ui/icons/Home';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import Link from 'react-router-dom/Link'
 
 const styles = {
   root: {
@@ -35,7 +36,7 @@ class Footer extends React.Component {
         className={classes.root}
         style={{position: 'absolute',bottom: 0, right: 0}}
       >
-        <BottomNavigationAction label="Начало" icon={<HomeIcon />} />
+        <BottomNavigationAction component={Link} to="/home" label="Начало" icon={<HomeIcon />} />
         <BottomNavigationAction label="Любими" icon={<FavoriteIcon />} />
         <BottomNavigationAction label="До мен" icon={<LocationOnIcon />} />
       </BottomNavigation>
