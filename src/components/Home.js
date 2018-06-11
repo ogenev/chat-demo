@@ -1,6 +1,9 @@
 import React from 'react'
 
+const doSignOut = () =>
+  console.log('sign out')
+
 export default props =>
   <div>
-    <h3>Home</h3>
+    <button onClick={doSignOut}>Sign out</button>
   </div>

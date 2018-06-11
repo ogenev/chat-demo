@@ -6,10 +6,8 @@ import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import firebase from 'firebase'
-import config from '../Firebase/config'
+import firebase from 'firebase/app'
 
-firebase.initializeApp(config)
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
   signInFlow: 'popup',
