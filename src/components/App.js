@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import ResDrawer from './ResDrawer'
+import ResDrawer from './ResDrawer/index'
 import firebase from 'firebase/app'
 
 class App extends Component {

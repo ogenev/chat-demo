@@ -1,18 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import IconButton from '@material-ui/core/IconButton';
-import Hidden from '@material-ui/core/Hidden';
-import Divider from '@material-ui/core/Divider';
-import MenuIcon from '@material-ui/icons/Menu';
-import Main from './Main'
-import Button from '@material-ui/core/Button'
-import { Link } from 'react-router-dom'
-import Footer from './Footer'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Drawer from '@material-ui/core/Drawer'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Hidden from '@material-ui/core/Hidden'
+import MenuIcon from '@material-ui/icons/Menu'
+import Main from '../Main'
+import Footer from '../Footer'
+import AppBarButton from './AppBarButton'
+import DrawerMenu from './DrawerMenu'
+import Logo from './Logo'
 
 const drawerWidth = 130;
 
@@ -70,20 +69,11 @@ class ResDrawer extends React.Component {
     const drawer = (
       <div>
         <div className={classes.toolbar} >
-          <h1>LOGO</h1>
+          <Logo />
         </div>
-        <Divider />
-        <List>Category 1</List>
-        <Divider />
-        <List>Category 2</List>
-        <Divider />
-        <List>Category 3</List>
-        <Divider />
-        <List>Category 4</List>
+       <DrawerMenu />
       </div>
     );
-
-    const LoginLink = props => <Link to='/login' {...props} />
 
     return (
       <div className={classes.root}>
@@ -97,12 +87,7 @@ class ResDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Button
-              color='inherit'
-              component={LoginLink}
-              style={{position: 'absolute',top: 10,right: 10}} >
-              Вход
-            </Button>
+            <AppBarButton />
           </Toolbar>
         </AppBar>
         <Hidden mdUp>
@@ -147,4 +132,4 @@ ResDrawer.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(ResDrawer);
+export default withStyles(styles, { withTheme: true })(ResDrawer)
