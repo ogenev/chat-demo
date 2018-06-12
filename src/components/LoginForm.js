@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase/app'
+import { auth } from '../Firebase/config'
 
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
@@ -37,54 +38,96 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
 
-});
+})
+
+const byPropKey = (propertyName, value) => () => ({
+  [propertyName]: value,
+})
+
+const INITIAL_STATE = {
+  email: '',
+  password: '',
+  error: null,
+}
 
 class LoginForm extends React.Component {
+  constructor(props) {
+    super(props)
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  };
+    this.state = { ...INITIAL_STATE }
+  }
+
+  onSubmit = (event) => {
+    const {
+      email,
+      password,
+    } = this.state;
+
+    const {
+      history,
+    } = this.props;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        this.setState(() => ({ ...INITIAL_STATE }));
+        history.push('/home')
+      })
+      .catch(error => {
+        this.setState(byPropKey('error', error));
+      });
+    event.preventDefault()
+
+  }
 
   render() {
     const { classes } = this.props;
+    const {
+      email,
+      password,
+      error,
+    } = this.state;
+
+    const isInvalid =
+      password === '' ||
+      email === '';
 
     return (
       <Fragment>
-        <form className={classes.container} noValidate autoComplete="off">
+        <form className={classes.container} onSubmit={this.onSubmit} autoComplete="off">
           <Grid container direction='column' alignItems='center'>
             <TextField
               id="email"
+              value={email}
+              onChange={event => this.setState(byPropKey('email', event.target.value))}
               label="Имейл адрес"
               className={classes.textField}
-              onChange={this.handleChange('name')}
               margin="normal"
             />
             <TextField
               id="password-input"
               label="Парола"
+              value={password}
               className={classes.textField}
+              onChange={event => this.setState(byPropKey('password', event.target.value))}
               type="password"
               autoComplete="current-password"
               margin="normal"
             />
+            <div style={{height: 10}}>
+            </div>
+            <Button variant="contained" color="primary" disabled={isInvalid} type="submit" className={classes.button}>
+              Вход
+            </Button>
           </Grid>
         </form>
         <Grid container direction='column' alignItems='center'>
-          <div style={{height: 10}}>
-          </div>
-          <Button variant="contained" color="primary" className={classes.button}>
-            Вход
-          </Button>
-          <div>
             <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
-          </div>
           <div style={{height: 20}}>
           </div>
           <Button variant='contained' color='secondary' component={Link} to='/register' >
             Регистрирай се
           </Button>
+          { error && <p>{error.message}</p> }
         </Grid>
       </Fragment>
     );

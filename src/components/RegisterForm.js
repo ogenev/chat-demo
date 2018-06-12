@@ -59,7 +59,9 @@ class RegisterForm extends React.Component {
     auth.createUserWithEmailAndPassword(email, passwordOne)
       .then(function(){
         history.push('/home')
-      }).catch(err => console.log(err))
+      }).catch(error => {
+      this.setState(byPropKey('error', error))
+    })
 
     event.preventDefault()
   }
@@ -88,6 +90,7 @@ class RegisterForm extends React.Component {
         <Grid container direction='column' alignItems='center'>
           <TextField
             id="username"
+            value={username}
             label="Потребителско Име"
             className={classes.textField}
             onChange={event => this.setState(byPropKey('username', event.target.value))}
@@ -95,6 +98,7 @@ class RegisterForm extends React.Component {
           />
         <TextField
           id="email"
+          value={email}
           label="Имейл адрес"
           className={classes.textField}
           onChange={event => this.setState(byPropKey('email', event.target.value))}
@@ -102,6 +106,7 @@ class RegisterForm extends React.Component {
         />
         <TextField
           id="password-input"
+          value={passwordOne}
           label="Парола"
           className={classes.textField}
           onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
@@ -112,6 +117,7 @@ class RegisterForm extends React.Component {
         <TextField
           id="confirmPassword-input"
           label="Потвърдете Паролата"
+          value={passwordTwo}
           className={classes.textField}
           onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
           type="password"
@@ -123,6 +129,7 @@ class RegisterForm extends React.Component {
                   disabled={isInvalid}>
             Регистрирай се
           </Button>
+          { error && <p>{error.message}</p> }
         </Grid>
       </form>
         <Grid container direction='column' alignItems='center'>
