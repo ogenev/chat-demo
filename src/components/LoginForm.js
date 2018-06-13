@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react'
-import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles/index'
 import PropTypes from 'prop-types'
@@ -8,6 +7,8 @@ import Grid from '@material-ui/core/Grid'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase/app'
 import { auth } from '../Firebase/config'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
@@ -37,7 +38,13 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
   },
-
+  link: {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  }
 })
 
 const byPropKey = (propertyName, value) => () => ({
@@ -118,6 +125,12 @@ class LoginForm extends React.Component {
             <Button variant="contained" color="primary" disabled={isInvalid} type="submit" className={classes.button}>
               Вход
             </Button>
+
+            <Typography variant="caption" gutterBottom align="center" className={classes.link} >
+              <Link to={'/pw-forgot'}>
+              Забравена парола?
+              </Link>
+            </Typography>
           </Grid>
         </form>
         <Grid container direction='column' alignItems='center'>

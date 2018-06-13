@@ -3,6 +3,7 @@ import RegisterForm from './components/RegisterForm'
 import { Switch, Route } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import Home from './components/Home'
+import PasswordForgetForm from './components/PasswordForget'
 
 export default props =>
   <Switch>
@@ -10,4 +11,5 @@ export default props =>
     <Route exact path='/register' component={RegisterForm} />
     <Route exact path='/login' component={LoginForm} />
     <Route exact path='/home' component={Home} />
+    <Route exact path='/pw-forgot' component={PasswordForgetForm} />
   </Switch>
