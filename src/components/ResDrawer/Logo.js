@@ -1,6 +1,4 @@
 import React from 'react'
 
 export default props =>
-  <h3>
-Logo
-  </h3>
+  <h3>Logo</h3>

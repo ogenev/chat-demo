@@ -52,19 +52,19 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
   },
-});
+})
 
 class ResDrawer extends React.Component {
   state = {
     mobileOpen: false,
-  };
+  }
 
   handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
+    this.setState({ mobileOpen: !this.state.mobileOpen })
+  }
 
   render() {
-    const { classes, theme, authUser } = this.props
+    const { classes, theme } = this.props
 
     const drawer =
       <div>
@@ -85,7 +85,7 @@ class ResDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <AppBarButton authUser={authUser} />
+            <AppBarButton />
           </Toolbar>
         </AppBar>
         <Hidden mdUp>
@@ -121,13 +121,13 @@ class ResDrawer extends React.Component {
           <Footer />
         </main>
       </div>
-    );
+    )
   }
 }
 
 ResDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-};
+}
 
 export default withStyles(styles, { withTheme: true })(ResDrawer)
