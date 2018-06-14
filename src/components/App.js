@@ -13,7 +13,7 @@ class App extends Component {
   componentDidMount () {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState({ authUser: 1 })
+        this.setState({ authUser: user })
       } else {
         this.setState({ authUser: null })
       }

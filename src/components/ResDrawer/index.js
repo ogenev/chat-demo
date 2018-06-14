@@ -64,17 +64,15 @@ class ResDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, authUser } = this.props
 
-    const drawer = (
+    const drawer =
       <div>
-        <div className={classes.toolbar} >
-          <Logo />
-        </div>
-       <DrawerMenu />
+      <div className={classes.toolbar} >
+        <Logo />
       </div>
-    );
-
+      <DrawerMenu />
+    </div>
     return (
       <div className={classes.root}>
         <AppBar className={classes.appBar}>
@@ -87,7 +85,7 @@ class ResDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <AppBarButton />
+            <AppBarButton authUser={authUser} />
           </Toolbar>
         </AppBar>
         <Hidden mdUp>
