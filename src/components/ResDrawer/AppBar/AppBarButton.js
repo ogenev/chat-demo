@@ -1,8 +1,8 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import Link from 'react-router-dom/Link'
-import firebase from 'firebase/app'
-import AppContext from '../AppContext'
+import AppContext from '../../AppContext'
+import ButtonMenu from './ButtonMenu'
 
 const LoginLink = props => <Link to='/login' {...props} />
 
@@ -22,15 +22,9 @@ class AppBarButton extends React.Component {
             )
           } else {
             return (
-              <Button
-                color='inherit'
-                onClick={() => (firebase.auth().signOut().then(function () {
-                }).catch(function (error) {
-                  console.log(error)
-                }))}
-                style={{position: 'absolute', top: 10, right: 10}}>
-                Изход
-              </Button>
+              <div style={{position: 'absolute', top: 5, right: 10}}>
+                <ButtonMenu />
+              </div>
             )
           }
         }}

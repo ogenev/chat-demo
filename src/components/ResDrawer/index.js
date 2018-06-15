@@ -9,7 +9,7 @@ import Hidden from '@material-ui/core/Hidden'
 import MenuIcon from '@material-ui/icons/Menu'
 import Main from '../Main'
 import Footer from '../Footer'
-import AppBarButton from './AppBarButton'
+import AppBarButton from './AppBar/AppBarButton'
 import DrawerMenu from './DrawerMenu'
 import Logo from './Logo'
 
