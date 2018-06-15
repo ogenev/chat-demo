@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase/app'
-import { auth } from '../Firebase/config'
+import { auth } from '../Firebase'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 

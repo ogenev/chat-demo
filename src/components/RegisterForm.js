@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react'
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import { auth } from '../Firebase/config'
+import { auth, database } from '../Firebase'
 
 
 const INITIAL_STATE = {
-  username: '',
+  name: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
@@ -45,9 +45,10 @@ class RegisterForm extends React.Component {
 
     this.state = { ...INITIAL_STATE }
   }
+
   onSubmit = (event) => {
     const {
-      username,
+      name,
       email,
       passwordOne,
     } = this.state;
@@ -56,11 +57,30 @@ class RegisterForm extends React.Component {
       history,
     } = this.props;
 
+    const that = this
+
+// Register user to Firebase
+
     auth.createUserWithEmailAndPassword(email, passwordOne)
-      .then(function(){
-        history.push('/home')
+      .then(function(authUser){
+
+        // Add user to database too
+
+        database.ref('users/' + authUser.user.uid).set({
+          userId: authUser.user.uid,
+          name: name,
+          email: email,
+        })
+          .then(() => {
+            that.setState(() => ({ ...INITIAL_STATE }))
+            history.push('/home')
+          })
+          .catch(error => {
+            that.setState(byPropKey('error', error))
+          });
+
       }).catch(error => {
-      this.setState(byPropKey('error', error))
+      that.setState(byPropKey('error', error))
     })
 
     event.preventDefault()
@@ -70,7 +90,7 @@ class RegisterForm extends React.Component {
     const { classes } = this.props
 
     const {
-      username,
+      name,
       email,
       passwordOne,
       passwordTwo,
@@ -81,7 +101,7 @@ class RegisterForm extends React.Component {
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
       email === '' ||
-      username === '';
+      name === ''
 
 
     return (
@@ -89,11 +109,11 @@ class RegisterForm extends React.Component {
       <form className={classes.container} noValidate autoComplete="off" onSubmit={this.onSubmit}>
         <Grid container direction='column' alignItems='center'>
           <TextField
-            id="username"
-            value={username}
-            label="Потребителско Име"
+            id="name"
+            value={name}
+            label="Име"
             className={classes.textField}
-            onChange={event => this.setState(byPropKey('username', event.target.value))}
+            onChange={event => this.setState(byPropKey('name', event.target.value))}
             margin="normal"
           />
         <TextField
@@ -145,4 +165,4 @@ RegisterForm.propTypes = {
 };
 
 
-export default withStyles(styles)(RegisterForm);
+export default withStyles(styles)(RegisterForm)
