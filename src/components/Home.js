@@ -11,6 +11,9 @@ class Home extends React.Component {
   render() {
     return (
       <div>
+        <h1>
+          Home
+        </h1>
         <button onClick={ this.goToAddOffer }>Add Offer</button>
       </div>
     )
