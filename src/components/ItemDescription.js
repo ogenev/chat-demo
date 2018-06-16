@@ -27,10 +27,8 @@ const styles = theme => ({
 });
 
 
-class OfferDescription extends React.Component {
-
+class ItemDescription extends React.Component {
   state = {
-    type: this.props.value,
     name: "",
     price: 0,
     promo: 0,
@@ -43,6 +41,7 @@ class OfferDescription extends React.Component {
     event.preventDefault()
     console.log(this.state);
   }
+
 
   handleChange = name => event => {
     this.setState({
@@ -66,15 +65,6 @@ class OfferDescription extends React.Component {
   render() {
     const { classes } = this.props;
 
-    let offerType;
-
-    if (this.props.value === 0) {
-      offerType = "Услуга"
-    //  this.setState({type: 0})
-    } else {
-      offerType = "Предмет"
-    //  this.setState({type: 1})
-    }
 
 
     return (
@@ -84,7 +74,7 @@ class OfferDescription extends React.Component {
             name="name"
             required
             id="name"
-            label= {offerType}
+            label= "Услуга"
             onChange={this.handleChange('name')}
             defaultValue=""
             className={classes.textField}
@@ -146,8 +136,8 @@ class OfferDescription extends React.Component {
   }
 }
 
-OfferDescription.propTypes = {
+ItemDescription.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(OfferDescription);
+export default withStyles(styles)(ItemDescription);
