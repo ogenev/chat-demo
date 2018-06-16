@@ -1,4 +1,6 @@
 import React from 'react'
 
 export default props =>
-  <h3>Logo</h3>
+  <main>
+    <h2>Page not found!</h2>
+  </main>
