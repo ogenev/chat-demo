@@ -42,9 +42,6 @@ class OfferDescription extends React.Component {
     console.log(this.state);
   }
 
-  componentDidMount() {this.setState({type: this.props.value})}
-
-
 
   handleChange = name => event => {
     this.setState({
@@ -68,18 +65,6 @@ class OfferDescription extends React.Component {
   render() {
     const { classes } = this.props;
 
-
-    let offerType;
-
-    if (this.props.value === 0) {
-      offerType = "Услуга"
-   // this.setState({type: 0})
-    } else {
-      offerType = "Предмет"
-      //this.setState({type: 1})
-    }
-
-
     return (
       <div>
         <form className={classes.container} noValidate autoComplete="off" onSubmit={this.createOffer}>
@@ -87,7 +72,7 @@ class OfferDescription extends React.Component {
             name="name"
             required
             id="name"
-            label= {offerType}
+            label= "Предмет"
             onChange={this.handleChange('name')}
             defaultValue=""
             className={classes.textField}
