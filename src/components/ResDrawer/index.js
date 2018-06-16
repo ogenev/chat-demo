@@ -9,7 +9,7 @@ import Hidden from '@material-ui/core/Hidden'
 import MenuIcon from '@material-ui/icons/Menu'
 import Main from '../Main'
 import Footer from '../Footer'
-import AppBarButton from './AppBarButton'
+import AppBarButton from './AppBar/AppBarButton'
 import DrawerMenu from './DrawerMenu'
 import Logo from './Logo'
 
@@ -52,29 +52,27 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
   },
-});
+})
 
 class ResDrawer extends React.Component {
   state = {
     mobileOpen: false,
-  };
+  }
 
   handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
+    this.setState({ mobileOpen: !this.state.mobileOpen })
+  }
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme } = this.props
 
-    const drawer = (
+    const drawer =
       <div>
-        <div className={classes.toolbar} >
-          <Logo />
-        </div>
-       <DrawerMenu />
+      <div className={classes.toolbar} >
+        <Logo />
       </div>
-    );
-
+      <DrawerMenu />
+    </div>
     return (
       <div className={classes.root}>
         <AppBar className={classes.appBar}>
@@ -123,13 +121,13 @@ class ResDrawer extends React.Component {
           <Footer />
         </main>
       </div>
-    );
+    )
   }
 }
 
 ResDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-};
+}
 
 export default withStyles(styles, { withTheme: true })(ResDrawer)

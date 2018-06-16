@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import ResDrawer from './ResDrawer/index'
 import firebase from 'firebase/app'
+import AppContext from './AppContext'
 
 class App extends Component {
   constructor (props) {
@@ -13,7 +14,7 @@ class App extends Component {
   componentDidMount () {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState({ authUser: 1 })
+        this.setState({ authUser: user })
       } else {
         this.setState({ authUser: null })
       }
@@ -22,9 +23,9 @@ class App extends Component {
 
   render () {
     return (
-      <Fragment>
-        <ResDrawer authUser={this.state.authUser} />
-      </Fragment>
+      <AppContext.Provider value={this.state}>
+        <ResDrawer />
+      </AppContext.Provider>
     )
   }
 }
