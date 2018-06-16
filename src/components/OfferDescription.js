@@ -28,9 +28,7 @@ const styles = theme => ({
 
 
 class OfferDescription extends React.Component {
-
   state = {
-    type: this.props.value,
     name: "",
     price: 0,
     promo: 0,
@@ -43,6 +41,10 @@ class OfferDescription extends React.Component {
     event.preventDefault()
     console.log(this.state);
   }
+
+  componentDidMount() {this.setState({type: this.props.value})}
+
+
 
   handleChange = name => event => {
     this.setState({
@@ -66,14 +68,15 @@ class OfferDescription extends React.Component {
   render() {
     const { classes } = this.props;
 
+
     let offerType;
 
     if (this.props.value === 0) {
       offerType = "Услуга"
-    //  this.setState({type: 0})
+   // this.setState({type: 0})
     } else {
       offerType = "Предмет"
-    //  this.setState({type: 1})
+      //this.setState({type: 1})
     }
 
 
