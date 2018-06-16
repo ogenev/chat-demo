@@ -4,7 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import OfferDescription from './OfferDescription';
+import ServiceDescription from './ServiceDescription';
+import ItemDescription from './ItemDescription';
 
 const styles = {
   root: {
@@ -17,6 +18,8 @@ class AddingOffer extends React.Component {
     value: 0,
   };
 
+
+
   handleChange = (event, value) => {
     this.setState({ value });
   };
@@ -24,6 +27,13 @@ class AddingOffer extends React.Component {
   render() {
     const { classes } = this.props;
 
+    let offerType
+    if (this.state.value === 0) {
+      offerType = <ItemDescription />
+    }
+    else {
+      offerType = <ServiceDescription />
+    }
 
     return (
       <div>
@@ -40,7 +50,7 @@ class AddingOffer extends React.Component {
           </Tabs>
         </Paper>
         <div>
-          <OfferDescription value = {this.state.value}/>
+          {offerType}
         </div>
       </div>
     );

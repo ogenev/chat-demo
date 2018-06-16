@@ -27,7 +27,7 @@ const styles = theme => ({
 });
 
 
-class ServiceDescription extends React.Component {
+class ItemDescription extends React.Component {
   state = {
     name: "",
     price: 0,
@@ -65,6 +65,8 @@ class ServiceDescription extends React.Component {
   render() {
     const { classes } = this.props;
 
+
+
     return (
       <div>
         <form className={classes.container} noValidate autoComplete="off" onSubmit={this.createOffer}>
@@ -72,7 +74,7 @@ class ServiceDescription extends React.Component {
             name="name"
             required
             id="name"
-            label= "Предмет"
+            label= "Услуга"
             onChange={this.handleChange('name')}
             defaultValue=""
             className={classes.textField}
@@ -134,8 +136,8 @@ class ServiceDescription extends React.Component {
   }
 }
 
-ServiceDescription.propTypes = {
+ItemDescription.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ServiceDescription);
+export default withStyles(styles)(ItemDescription);
