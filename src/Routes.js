@@ -6,6 +6,7 @@ import Home from './components/Home'
 import AddingOffer from './components/AddingOffer'
 import PasswordForgetForm from './components/PasswordForget'
 import NotFound from './components/NotFound'
+import TestOffer from './components/Chat/TestOffer'
 
 export default props =>
   <Switch>
@@ -15,5 +16,6 @@ export default props =>
     <Route exact path='/home' component={Home} />
     <Route path='/home/:userId' component={AddingOffer} />
     <Route exact path='/pw-forgot' component={PasswordForgetForm} />
+    <Route exact path='/testchat' component={TestOffer} />
     <Route exact path='*' component={NotFound} />
   </Switch>
