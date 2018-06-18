@@ -24,14 +24,17 @@ class ChatButton extends React.Component {
   onClick () {
     /*
      Redirect to login page if user is not logged in.
-     If user is logged, redirect to chat window with the createdUid
+     If user is logged, redirect to chat window and pass createdUid state
       */
 
     if (!this.props.authUser) {
       this.props.history.push('/login')
     } else {
-      console.log(this.props.authUser.uid)
-      console.log(this.props.createdUid)
+      this.props.history.push({
+        pathname: '/chat',
+        state: { createdUid: this.props.createdUid
+        }
+      })
     }
   }
 
