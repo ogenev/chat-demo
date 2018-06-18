@@ -10,7 +10,9 @@ class ChatWindow extends React.Component {
     }
 
     this.user = auth.currentUser
+
     this.createdUid = this.props.location.state.createdUid
+
     this.chatRef = database.ref().child('/chat' + this.generateChatId())
     this.chatRefData = this.chatRef.orderByChild('orders')
     this.onSend = this.onSend.bind(this)

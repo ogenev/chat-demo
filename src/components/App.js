@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import ResDrawer from './ResDrawer/index'
 import firebase from 'firebase/app'
 import AppContext from './AppContext'
+import { Switch, Route } from 'react-router-dom'
+import ChatWindow from './Chat/ChatWindow'
 
 class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      authUser: null
+      authUser: null,
+      createdId: null
     }
   }
 
@@ -24,7 +27,10 @@ class App extends Component {
   render () {
     return (
       <AppContext.Provider value={this.state}>
-        <ResDrawer />
+        <Switch>
+          <Route path='/chat' component={ChatWindow} />
+          <Route path='/' component={ResDrawer} />
+        </Switch>
       </AppContext.Provider>
     )
   }
