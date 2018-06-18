@@ -85,7 +85,7 @@ class ServiceDescription extends React.Component {
           .getDownloadURL()
           .then(url => {
           this.setState({url: url}, () => {
-            database.ref('offers/services').set({
+            database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
               UserId: this.state.UserId,
               name: this.state.name,
               price: this.state.price,
@@ -102,6 +102,9 @@ class ServiceDescription extends React.Component {
 
   render() {
     const { classes } = this.props;
+
+    const isInvalid =
+      this.state.name.length < 3 || this.state.price === 0
 
     return (
       <div>
@@ -162,7 +165,7 @@ class ServiceDescription extends React.Component {
             <Button variant="contained" href="#contained-buttons" className={classes.button}>
               Добави линк
             </Button>
-            <Button type="submit" variant="contained" color="secondary" className={classes.button}>
+            <Button type="submit" variant="contained" color="secondary" className={classes.button} disabled={isInvalid}>
               Публикувай офертата
             </Button>
           </label>
