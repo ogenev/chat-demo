@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
+import { database } from '../Firebase'
+import firebase from 'firebase'
 
 
 const styles = theme => ({
@@ -29,6 +31,7 @@ const styles = theme => ({
 
 class ServiceDescription extends React.Component {
   state = {
+    UserId: "",
     name: "",
     price: 0,
     promo: 0,
@@ -39,6 +42,14 @@ class ServiceDescription extends React.Component {
 
   createOffer = (event) => {
     event.preventDefault()
+    database.ref('offers/services').set({
+      UserId: this.state.UserId,
+      name: this.state.name,
+      price: this.state.price,
+      promo: this.state.promo,
+      description: this.state.description,
+      image: this.state.image
+    })
     console.log(this.state);
   }
 
@@ -46,6 +57,9 @@ class ServiceDescription extends React.Component {
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
+    });
+    this.setState({
+      UserId: firebase.auth().currentUser.uid,
     });
   };
 
@@ -72,7 +86,7 @@ class ServiceDescription extends React.Component {
             name="name"
             required
             id="name"
-            label= "Предмет"
+            label= "Услуга"
             onChange={this.handleChange('name')}
             defaultValue=""
             className={classes.textField}
