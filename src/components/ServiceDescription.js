@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
 import { database } from '../Firebase'
+import { storage } from '../Firebase/config'
 import firebase from 'firebase'
 
 
@@ -36,12 +37,14 @@ class ServiceDescription extends React.Component {
     price: 0,
     promo: 0,
     description: "",
-    image: null
+    image: null,
+    url: ''
   };
 
 
   createOffer = (event) => {
     event.preventDefault()
+    this.handleUpload()
     database.ref('offers/services').set({
       UserId: this.state.UserId,
       name: this.state.name,
@@ -74,6 +77,22 @@ class ServiceDescription extends React.Component {
     this.setState({image: event.target.files[0]})
   }
 
+  handleUpload = () => {
+    const {image} = this.state
+    const uploadTask = storage.ref(`images/${image.name}`).put(image)
+    uploadTask.on('state_changed',
+      (snapshot) => {
+
+      },
+      (error) => {
+        console.log(error)
+      },
+      () => {
+        storage.ref('images').child(image.name).getDownloadURL().then(url => {
+          console.log(url)
+        })
+      })
+  }
 
 
   render() {
