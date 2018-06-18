@@ -38,22 +38,14 @@ class ServiceDescription extends React.Component {
     promo: 0,
     description: "",
     image: null,
-    url: ''
+    url: []
   };
 
 
   createOffer = (event) => {
     event.preventDefault()
     this.handleUpload()
-    database.ref('offers/services').set({
-      UserId: this.state.UserId,
-      name: this.state.name,
-      price: this.state.price,
-      promo: this.state.promo,
-      description: this.state.description,
-      image: this.state.image
-    })
-    console.log(this.state);
+
   }
 
 
@@ -88,8 +80,21 @@ class ServiceDescription extends React.Component {
         console.log(error)
       },
       () => {
-        storage.ref('images').child(image.name).getDownloadURL().then(url => {
-          console.log(url)
+        storage.ref('images')
+          .child(image.name)
+          .getDownloadURL()
+          .then(url => {
+          this.setState({url: url}, () => {
+            database.ref('offers/services').set({
+              UserId: this.state.UserId,
+              name: this.state.name,
+              price: this.state.price,
+              promo: this.state.promo,
+              description: this.state.description,
+              url: this.state.url
+            })
+            console.log(this.state);
+          })
         })
       })
   }

@@ -51,7 +51,7 @@ class ItemDescription extends React.Component {
       price: this.state.price,
       promo: this.state.promo,
       description: this.state.description,
-      image: this.state.image
+      url: this.state.url
     })
     console.log(this.state);
   }
@@ -89,7 +89,7 @@ class ItemDescription extends React.Component {
       },
       () => {
         storage.ref('images').child(image.name).getDownloadURL().then(url => {
-          console.log(url)
+          this.setState({url: url})
         })
       })
   }
