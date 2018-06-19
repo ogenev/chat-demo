@@ -37,7 +37,7 @@ class ServiceDescription extends React.Component {
     price: 0,
     promo: 0,
     description: "",
-    image: null,
+    images: [],
     url: []
   };
 
@@ -66,38 +66,50 @@ class ServiceDescription extends React.Component {
 
 
   fileChangedHandler = (event) => {
-    this.setState({image: event.target.files[0]})
+    this.setState({images: event.target.files})
   }
 
   handleUpload = () => {
-    const {image} = this.state
-    const uploadTask = storage.ref(`images/${image.name}`).put(image)
-    uploadTask.on('state_changed',
-      (snapshot) => {
+    const {images} = this.state
+    //1. Upload images
+    //2. Upload urls
+    //const uploadTask = storage.ref(`images/${image.name}`).put(image)
+    let imagePromise =(image) => {
+      let uploadTask = storage.ref(`images/${image.name}`).put(image)
+      return new Promise((resolve, reject) => {
+        uploadTask.on('state_changed',
+          (snapshot) => {
 
-      },
-      (error) => {
-        console.log(error)
-      },
-      () => {
-        storage.ref('images')
-          .child(image.name)
-          .getDownloadURL()
-          .then(url => {
-          this.setState({url: url}, () => {
-            database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
-              UserId: this.state.UserId,
-              name: this.state.name,
-              price: this.state.price,
-              promo: this.state.promo,
-              description: this.state.description,
-              url: this.state.url
-            })
-            console.log(this.state);
-          })
-        })
+          },
+          (err) => {
+            reject(err);
+          },
+          () => {
+            storage.ref('images').child(image.name)
+               uploadTask.snapshot.ref.getDownloadURL()
+               .then(newUrl => {
+                 this.setState({url: [...this.state.url, newUrl]})
+                 console.log(this.state.url)
+                 if (this.state.url.length === images.length) {
+                   database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
+                     UserId: this.state.UserId,
+                     name: this.state.name,
+                     price: this.state.price,
+                     promo: this.state.promo,
+                     description: this.state.description,
+                     url: this.state.url
+                   })
+                 }
+              })
+          }
+        )
       })
+    }
+    for (let i=0; i < images.length; i++) {
+      imagePromise(images[i])
+    }
   }
+
 
 
   render() {
