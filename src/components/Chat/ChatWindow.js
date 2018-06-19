@@ -1,5 +1,6 @@
 import React from 'react'
 import {auth, database} from '../../Firebase'
+import ChatInput from './ChatInput'
 
 class ChatWindow extends React.Component {
   constructor (props) {
@@ -13,7 +14,7 @@ class ChatWindow extends React.Component {
 
     this.createdUid = this.props.location.state.createdUid
 
-    this.chatRef = database.ref().child('/chat' + this.generateChatId())
+    this.chatRef = database.ref().child(`/chatThreads/${this.generateChatId()}`)
     this.chatRefData = this.chatRef.orderByChild('orders')
     this.onSend = this.onSend.bind(this)
     this.listenForItems = this.listenForItems.bind(this)
@@ -32,17 +33,18 @@ class ChatWindow extends React.Component {
     this.chatRefData.off()
   }
 
-  onSend (messages = []) {
-    messages.forEach(message => {
-      let now = new Date().getTime()
-      this.chatRef.push({
-        _id: now,
-        text: message.text,
-        createdAt: now,
-        uid: this.user.uid,
-        order: -1 * now
-      })
-    })
+  onSend (message) {
+    // Get massage from ChatInput and send it to database:
+    let now = new Date().getTime()
+    let messageData = {
+      userId: this.user.uid,
+      displayName: this.user.displayName,
+      chatMessage: message,
+      chatTimestamp: now
+      // order: -1 * now
+    }
+    // chatThread/threadId(generateChatId)/messageId(firebase generated)/messageData
+    this.chatRef.push(messageData)
   }
 
   listenForItems (chatRef) {
@@ -79,6 +81,7 @@ class ChatWindow extends React.Component {
         <h3>
           Chat window
         </h3>
+        <ChatInput onSend={this.onSend} />
       </div>
     )
   }
