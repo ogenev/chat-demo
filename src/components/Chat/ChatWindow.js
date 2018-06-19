@@ -3,15 +3,12 @@ import {auth, database} from '../../Firebase'
 import ChatInput from './ChatInput'
 import AllMessages from './AllMessages'
 
-const allMessages = []
-
 class ChatWindow extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      allMessages: [],
-      ogi: 0
+      allMessages: []
     }
 
     this.user = auth.currentUser
@@ -32,9 +29,6 @@ class ChatWindow extends React.Component {
   componentDidMount () {
     // start listen to data changes on mount
     this.listenForMessages(this.chatRefData)
-    console.log(allMessages)
-    this.setState({
-      AllMessages: allMessages})
   }
 
   componentWillUnmount () {
@@ -58,6 +52,7 @@ class ChatWindow extends React.Component {
   }
 
   listenForMessages (chatRef) {
+    const allMessages = []
     // Get all messages from database and set the state
     chatRef.on('value', snapshot => {
       snapshot.forEach(child => {
@@ -68,18 +63,13 @@ class ChatWindow extends React.Component {
         })
       })
     })
+    this.setState({
+      allMessages: allMessages})
   }
 
   render () {
     return (
       <div>
-        {/*
-        messages={this.state.messages}
-        onSend={this.onSend.bind(this)}
-        user={{
-          _id: this.user.uid
-        }}
-      */}
         <h3>
           Chat window
         </h3>
