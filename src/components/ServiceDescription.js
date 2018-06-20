@@ -76,7 +76,7 @@ class ServiceDescription extends React.Component {
   }
 
   handleUpload = () => {
-    if (this.state.images === []) {
+    if (this.state.images.length > 0) {
       const {images} = this.state
       //1. Upload images
       //2. Upload urls
@@ -98,6 +98,7 @@ class ServiceDescription extends React.Component {
                   this.setState({url: [...this.state.url, newUrl]})
                   console.log(this.state.url)
                   if (this.state.url.length === images.length) {
+                    console.log('executing one')
                     database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
                       UserId: this.state.UserId,
                       name: this.state.name,
@@ -110,7 +111,7 @@ class ServiceDescription extends React.Component {
                       name: "",
                       price: "",
                       promo: "",
-                      description: "",//
+                      description: "",
                       images: [],
                       url: [],
                       showBtn: 1
@@ -125,14 +126,15 @@ class ServiceDescription extends React.Component {
         imagePromise(images[i])
       }
     }
-    else {
+    if (this.state.images.length === 0) {
+      console.log('executing')
       database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
         UserId: this.state.UserId,
         name: this.state.name,
         price: parseFloat(parseFloat(this.state.price).toFixed(2)) * 100,
         promo: parseFloat(parseFloat(this.state.promo).toFixed(2)) * 100,
         description: this.state.description,
-        url: this.state.url
+        url: 'no images'
       });
       this.setState({
         name: "",
