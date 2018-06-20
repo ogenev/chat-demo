@@ -29,7 +29,6 @@ const styles = theme => ({
   }
 });
 
-
 class ServiceDescription extends React.Component {
   state = {
     showBtn: 1,
@@ -41,7 +40,6 @@ class ServiceDescription extends React.Component {
     images: [],
     url: []
   };
-
 
   createOffer = (event) => {
     this.setState({showBtn: 0})
@@ -60,16 +58,21 @@ class ServiceDescription extends React.Component {
     });
   };
 
- ////handleChangeNum = name => event => {
- //  this.setState({
- //    [name]: parseFloat(parseFloat(event.target.value).toFixed(2)) * 100,
- // });
- //};
+  calcPrice = (price) => {
+    return parseFloat(parseFloat(price).toFixed(2)) * 100
+  };
 
-//   calcPrice (price) {
-//   return parseFloat(parseFloat(price).toFixed(2)) * 100
-// };
-//
+  resetState = () => {
+    this.setState({
+      name: "",
+      price: "",
+      promo: "",
+      description: "",
+      images: [],
+      url: [],
+      showBtn: 1
+    })
+  }
 
   fileChangedHandler = (event) => {
     this.setState({images: event.target.files})
@@ -102,20 +105,12 @@ class ServiceDescription extends React.Component {
                     database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
                       UserId: this.state.UserId,
                       name: this.state.name,
-                      price: parseFloat(parseFloat(this.state.price).toFixed(2)) * 100,
-                      promo: parseFloat(parseFloat(this.state.promo).toFixed(2)) * 100,
+                      price: this.calcPrice(this.state.price),
+                      promo: this.calcPrice(this.state.promo),
                       description: this.state.description,
                       url: this.state.url
                     });
-                    this.setState({
-                      name: "",
-                      price: "",
-                      promo: "",
-                      description: "",
-                      images: [],
-                      url: [],
-                      showBtn: 1
-                    })
+                    this.resetState()
                   }
                 })
             }
@@ -136,19 +131,9 @@ class ServiceDescription extends React.Component {
         description: this.state.description,
         url: 'no images'
       });
-      this.setState({
-        name: "",
-        price: "",
-        promo: "",
-        description: "",//
-        images: [],
-        url: [],
-        showBtn: 1
-      })
+      this.resetState()
     }
   }
-
-
 
   render() {
     const { classes } = this.props;
