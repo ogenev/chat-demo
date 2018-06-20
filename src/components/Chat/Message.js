@@ -2,16 +2,13 @@ import React from 'react'
 
 class Message extends React.Component {
   render () {
-    // Was the message sent by the current user. If so, add a css class
-    const fromMe = this.props.fromMe ? 'from-me' : ''
-
     return (
-      <div className={`message ${fromMe}`}>
+      <div className={`message`}>
         <div className='username'>
-          { this.props.username }
+          { this.props.displayName}
         </div>
         <div className='message-body'>
-          { this.props.message }
+          { this.props.chatMessage }
         </div>
       </div>
     )
@@ -19,9 +16,8 @@ class Message extends React.Component {
 }
 
 Message.defaultProps = {
-  message: '',
-  username: '',
-  fromMe: false
+  chatMessage: '',
+  displayName: '',
 }
 
 export default Message

@@ -3,23 +3,23 @@ import React from 'react'
 import Message from './Message'
 
 class AllMessages extends React.Component {
-
-  componentDidUpdate() {
+  componentDidUpdate () {
     // There is a new message in the state, scroll to bottom of list
     const objDiv = document.getElementById('messageList')
     objDiv.scrollTop = objDiv.scrollHeight
   }
 
-  render() {
-    console.log(this.props)
+  render () {
+    console.log(this.props.messages)
+    console.log(this.props.messages[0])
     // Loop through all the messages in the state and create a Message component
     const messages = this.props.messages.map((message, i) => {
       return (
         <Message
           key={i}
-          username={message.username}
-          message={message.message}
-          fromMe={message.fromMe} />
+          displayName={message.displayName}
+          chatMessage={message.chatMessage}
+        />
       )
     })
 
