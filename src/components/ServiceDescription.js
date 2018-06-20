@@ -32,10 +32,11 @@ const styles = theme => ({
 
 class ServiceDescription extends React.Component {
   state = {
+    showBtn: 1,
     UserId: "",
     name: "",
-    price: 0,
-    promo: 0,
+    price: "",
+    promo: "",
     description: "",
     images: [],
     url: []
@@ -43,7 +44,11 @@ class ServiceDescription extends React.Component {
 
 
   createOffer = (event) => {
+    this.setState({showBtn: 0})
     event.preventDefault()
+    this.setState({
+      UserId: firebase.auth().currentUser.uid,
+    });
     this.handleUpload()
 
   }
@@ -53,17 +58,18 @@ class ServiceDescription extends React.Component {
     this.setState({
       [name]: event.target.value,
     });
-    this.setState({
-      UserId: firebase.auth().currentUser.uid,
-    });
   };
 
-  handleChangeNum = name => event => {
-    this.setState({
-      [name]: parseFloat(parseFloat(event.target.value).toFixed(2)) * 100,
-    });
-  };
+ ////handleChangeNum = name => event => {
+ //  this.setState({
+ //    [name]: parseFloat(parseFloat(event.target.value).toFixed(2)) * 100,
+ // });
+ //};
 
+//   calcPrice (price) {
+//   return parseFloat(parseFloat(price).toFixed(2)) * 100
+// };
+//
 
   fileChangedHandler = (event) => {
     this.setState({images: event.target.files})
@@ -94,11 +100,17 @@ class ServiceDescription extends React.Component {
                    database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
                      UserId: this.state.UserId,
                      name: this.state.name,
-                     price: this.state.price,
-                     promo: this.state.promo,
+                     price: parseFloat(parseFloat(this.state.price).toFixed(2)) * 100,
+                     promo: parseFloat(parseFloat(this.state.promo).toFixed(2)) * 100,
                      description: this.state.description,
                      url: this.state.url
-                   })
+                   }); this.setState({name: "",
+                     price: "",
+                     promo: "",
+                     description: "",//
+                     images: [],
+                     url: [],
+                     showBtn: 1})
                  }
               })
           }
@@ -116,7 +128,7 @@ class ServiceDescription extends React.Component {
     const { classes } = this.props;
 
     const isInvalid =
-      this.state.name.length < 3 || this.state.price === 0
+      this.state.name.length < 3 || this.state.price === 0 || this.state.showBtn === 0
 
     return (
       <div>
@@ -127,7 +139,8 @@ class ServiceDescription extends React.Component {
             id="name"
             label= "Услуга"
             onChange={this.handleChange('name')}
-            defaultValue=""
+            placeholder= "наименование"
+            value={this.state.name}
             className={classes.textField}
             margin="normal"
           />
@@ -136,7 +149,8 @@ class ServiceDescription extends React.Component {
             required
             id="number"
             label="Редовна цена в лева"
-            onChange={this.handleChangeNum('price')}
+            onChange={this.handleChange('price')}
+            value={this.state.price}
             type="number"
             className={classes.textField}
             margin="normal"
@@ -145,7 +159,8 @@ class ServiceDescription extends React.Component {
             name="promo"
             id="number"
             label="Промоционална цена"
-            onChange={this.handleChangeNum('promo')}
+            onChange={this.handleChange('promo')}
+            value={this.state.promo}
             type="number"
             className={classes.textField}
             margin="normal"
@@ -160,6 +175,7 @@ class ServiceDescription extends React.Component {
             multiline
             className={classes.textField}
             margin="normal"
+            value={this.state.description}
           />
           <input
             name="image"
