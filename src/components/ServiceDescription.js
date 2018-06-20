@@ -76,49 +76,73 @@ class ServiceDescription extends React.Component {
   }
 
   handleUpload = () => {
-    const {images} = this.state
-    //1. Upload images
-    //2. Upload urls
-    //const uploadTask = storage.ref(`images/${image.name}`).put(image)
-    let imagePromise =(image) => {
-      let uploadTask = storage.ref(`images/${image.name}`).put(image)
-      return new Promise((resolve, reject) => {
-        uploadTask.on('state_changed',
-          (snapshot) => {
+    if (this.state.images === []) {
+      const {images} = this.state
+      //1. Upload images
+      //2. Upload urls
+      //const uploadTask = storage.ref(`images/${image.name}`).put(image)
+      let imagePromise = (image) => {
+        let uploadTask = storage.ref(`images/${image.name}`).put(image)
+        return new Promise((resolve, reject) => {
+          uploadTask.on('state_changed',
+            (snapshot) => {
 
-          },
-          (err) => {
-            reject(err);
-          },
-          () => {
-            storage.ref('images').child(image.name)
-               uploadTask.snapshot.ref.getDownloadURL()
-               .then(newUrl => {
-                 this.setState({url: [...this.state.url, newUrl]})
-                 console.log(this.state.url)
-                 if (this.state.url.length === images.length) {
-                   database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
-                     UserId: this.state.UserId,
-                     name: this.state.name,
-                     price: parseFloat(parseFloat(this.state.price).toFixed(2)) * 100,
-                     promo: parseFloat(parseFloat(this.state.promo).toFixed(2)) * 100,
-                     description: this.state.description,
-                     url: this.state.url
-                   }); this.setState({name: "",
-                     price: "",
-                     promo: "",
-                     description: "",//
-                     images: [],
-                     url: [],
-                     showBtn: 1})
-                 }
-              })
-          }
-        )
-      })
+            },
+            (err) => {
+              reject(err);
+            },
+            () => {
+              storage.ref('images').child(image.name)
+              uploadTask.snapshot.ref.getDownloadURL()
+                .then(newUrl => {
+                  this.setState({url: [...this.state.url, newUrl]})
+                  console.log(this.state.url)
+                  if (this.state.url.length === images.length) {
+                    database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
+                      UserId: this.state.UserId,
+                      name: this.state.name,
+                      price: parseFloat(parseFloat(this.state.price).toFixed(2)) * 100,
+                      promo: parseFloat(parseFloat(this.state.promo).toFixed(2)) * 100,
+                      description: this.state.description,
+                      url: this.state.url
+                    });
+                    this.setState({
+                      name: "",
+                      price: "",
+                      promo: "",
+                      description: "",//
+                      images: [],
+                      url: [],
+                      showBtn: 1
+                    })
+                  }
+                })
+            }
+          )
+        })
+      }
+      for (let i = 0; i < images.length; i++) {
+        imagePromise(images[i])
+      }
     }
-    for (let i=0; i < images.length; i++) {
-      imagePromise(images[i])
+    else {
+      database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
+        UserId: this.state.UserId,
+        name: this.state.name,
+        price: parseFloat(parseFloat(this.state.price).toFixed(2)) * 100,
+        promo: parseFloat(parseFloat(this.state.promo).toFixed(2)) * 100,
+        description: this.state.description,
+        url: this.state.url
+      });
+      this.setState({
+        name: "",
+        price: "",
+        promo: "",
+        description: "",//
+        images: [],
+        url: [],
+        showBtn: 1
+      })
     }
   }
 
@@ -188,10 +212,7 @@ class ServiceDescription extends React.Component {
           />
           <label htmlFor="contained-button-file">
             <Button variant="contained" component="span" className={classes.button}>
-              Качи снимка
-            </Button>
-            <Button variant="contained" href="#contained-buttons" className={classes.button}>
-              Добави линк
+              Прикачи снимка
             </Button>
             <Button type="submit" variant="contained" color="secondary" className={classes.button} disabled={isInvalid}>
               Публикувай офертата
