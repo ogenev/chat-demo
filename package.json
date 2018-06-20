@@ -9,6 +9,7 @@
     "child-process-promise": "^2.2.1",
     "firebase": "^5.0.4",
     "firebaseui": "^3.0.0",
+    "imagenation": "^2.2.2",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",

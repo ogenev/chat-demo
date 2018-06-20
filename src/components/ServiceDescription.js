@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button'
 import { database } from '../Firebase'
 import { storage } from '../Firebase/config'
 import firebase from 'firebase'
+import ImageRes from './ImageRes'
 
 
 const styles = theme => ({
@@ -48,9 +49,7 @@ class ServiceDescription extends React.Component {
       UserId: firebase.auth().currentUser.uid,
     });
     this.handleUpload()
-
   }
-
 
   handleChange = name => event => {
     this.setState({
@@ -99,7 +98,6 @@ class ServiceDescription extends React.Component {
               uploadTask.snapshot.ref.getDownloadURL()
                 .then(newUrl => {
                   this.setState({url: [...this.state.url, newUrl]})
-                  console.log(this.state.url)
                   if (this.state.url.length === images.length) {
                     console.log('executing one')
                     database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
@@ -204,6 +202,7 @@ class ServiceDescription extends React.Component {
             <Button type="submit" variant="contained" color="secondary" className={classes.button} disabled={isInvalid}>
               Публикувай офертата
             </Button>
+            <ImageRes />
           </label>
         </form>
       </div>
