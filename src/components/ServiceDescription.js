@@ -6,7 +6,6 @@ import Button from '@material-ui/core/Button'
 import { database } from '../Firebase'
 import { storage } from '../Firebase/config'
 import firebase from 'firebase'
-import ImageRes from './ImageRes'
 
 
 const styles = theme => ({
@@ -202,7 +201,6 @@ class ServiceDescription extends React.Component {
             <Button type="submit" variant="contained" color="secondary" className={classes.button} disabled={isInvalid}>
               Публикувай офертата
             </Button>
-            <ImageRes />
           </label>
         </form>
       </div>
