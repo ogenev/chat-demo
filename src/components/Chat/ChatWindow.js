@@ -54,14 +54,8 @@ class ChatWindow extends React.Component {
   listenForMessages (chatRef) {
     const allMessages = []
     // Get all messages from database and set the state
-    chatRef.on('value', snapshot => {
-      snapshot.forEach(child => {
-        allMessages.push({
-          displayName: child.val().displayName,
-          chatMessage: child.val().chatMessage,
-          chatTimestamp: new Date(child.val().chatTimestamp)
-        })
-      })
+    chatRef.on('child_added', snapshot => {
+      allMessages.push(snapshot.val())
       this.setState({
         allMessages: allMessages})
     })
