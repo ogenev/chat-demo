@@ -10,8 +10,6 @@ class AllMessages extends React.Component {
   }
 
   render () {
-    console.log(this.props.messages)
-    console.log(this.props.messages[0])
     // Loop through all the messages in the state and create a Message component
     const messages = this.props.messages.map((message, i) => {
       return (

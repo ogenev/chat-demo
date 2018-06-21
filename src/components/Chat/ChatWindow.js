@@ -62,9 +62,9 @@ class ChatWindow extends React.Component {
           chatTimestamp: new Date(child.val().chatTimestamp)
         })
       })
+      this.setState({
+        allMessages: allMessages})
     })
-    this.setState({
-      allMessages: allMessages})
   }
 
   render () {
