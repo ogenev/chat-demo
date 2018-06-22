@@ -1,4 +1,4 @@
-/* const functions = require("firebase-functions");
+/*const functions = require("firebase-functions");
 const gcs = require('@google-cloud/storage')();
 const os = require('os');
 const path = require('path');
@@ -31,4 +31,4 @@ exports.onFileChange= functions.storage.object().onFinalize(event => {
       metadata: metadata
     })
   });
-}); */
+});
