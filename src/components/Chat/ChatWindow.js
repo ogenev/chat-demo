@@ -36,7 +36,23 @@ class ChatWindow extends React.Component {
     this.chatRefData.off()
   }
 
+  // Logic when sending message in ChatInput:
   onSend (message) {
+    /*
+    Check if this is the first message between users and
+    add the threadId to both users in the database if true
+    */
+    if (this.state.allMessages.length === 0) {
+      const chatId = this.generateChatId()
+      database.ref(`users/${this.user.uid}/activeThreads/${chatId}`).set({
+        threadId: chatId
+      }).then(
+        database.ref(`users/${this.createdUid}/activeThreads/${chatId}`).set({
+          threadId: chatId
+        }).catch(err => console.log(err))
+      )
+        .catch(err => console.log(err))
+    }
     // Get massage from ChatInput and send it to database:
     let now = new Date().getTime()
     let messageData = {
