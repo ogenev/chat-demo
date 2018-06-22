@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
+import { database } from '../Firebase'
+import { storage } from '../Firebase/config'
+import firebase from 'firebase'
 
 
 const styles = theme => ({
@@ -29,16 +32,27 @@ const styles = theme => ({
 
 class ItemDescription extends React.Component {
   state = {
+    UserId: "",
     name: "",
     price: 0,
     promo: 0,
     description: "",
-    image: null
+    image: null,
+    url: ''
   };
 
 
   createOffer = (event) => {
     event.preventDefault()
+    this.handleUpload()
+    database.ref('offers/items').set({
+      UserId: this.state.UserId,
+      name: this.state.name,
+      price: this.state.price,
+      promo: this.state.promo,
+      description: this.state.description,
+      url: this.state.url
+    })
     console.log(this.state);
   }
 
@@ -46,6 +60,9 @@ class ItemDescription extends React.Component {
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
+    });
+    this.setState({
+      UserId: firebase.auth().currentUser.uid,
     });
   };
 
@@ -60,12 +77,26 @@ class ItemDescription extends React.Component {
     this.setState({image: event.target.files[0]})
   }
 
+  handleUpload = () => {
+    const {image} = this.state
+    const uploadTask = storage.ref(`images/${image.name}`).put(image)
+    uploadTask.on('state_changed',
+      (snapshot) => {
+
+      },
+      (error) => {
+        console.log(error)
+      },
+      () => {
+        storage.ref('images').child(image.name).getDownloadURL().then(url => {
+          this.setState({url: url})
+        })
+      })
+  }
 
 
   render() {
     const { classes } = this.props;
-
-
 
     return (
       <div>
@@ -74,7 +105,7 @@ class ItemDescription extends React.Component {
             name="name"
             required
             id="name"
-            label= "Услуга"
+            label= "Предмет"
             onChange={this.handleChange('name')}
             defaultValue=""
             className={classes.textField}
