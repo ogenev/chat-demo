@@ -8,7 +8,7 @@ import { auth, database } from '../Firebase'
 
 
 const INITIAL_STATE = {
-  name: '',
+  displayName: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
@@ -48,7 +48,7 @@ class RegisterForm extends React.Component {
 
   onSubmit = (event) => {
     const {
-      name,
+      displayName,
       email,
       passwordOne,
     } = this.state;
@@ -68,11 +68,21 @@ class RegisterForm extends React.Component {
 
         database.ref('users/' + authUser.user.uid).set({
           userId: authUser.user.uid,
-          name: name,
+          displayName: displayName,
           email: email,
         })
           .then(() => {
             that.setState(() => ({ ...INITIAL_STATE }))
+            // Set user displayName in Firebase:
+
+            authUser.user.updateProfile({
+              displayName: displayName,
+            }).then(function() {
+              // Update successful.
+            }).catch(function(error) {
+              console.log(error)
+            })
+
             history.push('/home')
           })
           .catch(error => {
@@ -90,7 +100,7 @@ class RegisterForm extends React.Component {
     const { classes } = this.props
 
     const {
-      name,
+      displayName,
       email,
       passwordOne,
       passwordTwo,
@@ -101,7 +111,7 @@ class RegisterForm extends React.Component {
       passwordOne !== passwordTwo ||
       passwordOne === '' ||
       email === '' ||
-      name === ''
+      displayName === ''
 
 
     return (
@@ -109,11 +119,11 @@ class RegisterForm extends React.Component {
       <form className={classes.container} noValidate autoComplete="off" onSubmit={this.onSubmit}>
         <Grid container direction='column' alignItems='center'>
           <TextField
-            id="name"
-            value={name}
+            id="displayName"
+            value={displayName}
             label="Име"
             className={classes.textField}
-            onChange={event => this.setState(byPropKey('name', event.target.value))}
+            onChange={event => this.setState(byPropKey('displayName', event.target.value))}
             margin="normal"
           />
         <TextField
