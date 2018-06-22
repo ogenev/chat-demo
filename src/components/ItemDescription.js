@@ -1,11 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { database } from '../Firebase'
-import { storage } from '../Firebase/config'
-import firebase from 'firebase'
+import { database, storage, auth } from '../Firebase'
 
 
 const styles = theme => ({
@@ -27,7 +25,7 @@ const styles = theme => ({
   input: {
     display: 'none',
   }
-});
+})
 
 
 class ItemDescription extends React.Component {
@@ -39,7 +37,7 @@ class ItemDescription extends React.Component {
     description: "",
     image: null,
     url: ''
-  };
+  }
 
 
   createOffer = (event) => {
@@ -53,24 +51,24 @@ class ItemDescription extends React.Component {
       description: this.state.description,
       url: this.state.url
     })
-    console.log(this.state);
+    console.log(this.state)
   }
 
 
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
-    });
+    })
     this.setState({
-      UserId: firebase.auth().currentUser.uid,
-    });
-  };
+      UserId: auth.currentUser.uid,
+    })
+  }
 
   handleChangeNum = name => event => {
     this.setState({
       [name]: parseFloat(parseFloat(event.target.value).toFixed(2)) * 100,
-    });
-  };
+    })
+  }
 
 
   fileChangedHandler = (event) => {
@@ -96,7 +94,7 @@ class ItemDescription extends React.Component {
 
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <div>
@@ -169,6 +167,6 @@ class ItemDescription extends React.Component {
 
 ItemDescription.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles)(ItemDescription);
+export default withStyles(styles)(ItemDescription)

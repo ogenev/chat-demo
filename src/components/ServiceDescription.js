@@ -1,12 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { database } from '../Firebase'
-import { storage } from '../Firebase/config'
-import firebase from 'firebase'
-
+import { database, storage, auth } from '../Firebase'
 
 const styles = theme => ({
   container: {
@@ -45,7 +42,7 @@ class ServiceDescription extends React.Component {
     this.setState({showBtn: 0})
     event.preventDefault()
     this.setState({
-      UserId: firebase.auth().currentUser.uid,
+      UserId: auth.currentUser.uid,
     });
     this.handleUpload()
   }
@@ -133,7 +130,7 @@ class ServiceDescription extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     const isInvalid =
       this.state.name.length < 3 || this.state.price === 0 || this.state.showBtn === 0
@@ -212,4 +209,4 @@ ServiceDescription.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ServiceDescription);
+export default withStyles(styles)(ServiceDescription)

@@ -1,11 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import ServiceDescription from './ItemDescription';
-import ItemDescription from './ServiceDescription';
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import ServiceDescription from './ItemDescription'
+import ItemDescription from './ServiceDescription'
 
 const styles = {
   root: {
@@ -16,16 +16,16 @@ const styles = {
 class AddingOffer extends React.Component {
   state = {
     value: 0,
-  };
+  }
 
 
 
   handleChange = (event, value) => {
-    this.setState({ value });
-  };
+    this.setState({ value })
+  }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     let offerType
     if (this.state.value === 0) {
@@ -53,12 +53,12 @@ class AddingOffer extends React.Component {
           {offerType}
         </div>
       </div>
-    );
+    )
   }
 }
 
 AddingOffer.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles)(AddingOffer);
+export default withStyles(styles)(AddingOffer)

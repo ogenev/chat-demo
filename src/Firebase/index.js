@@ -1,6 +1,7 @@
-import {auth, database} from './config'
+import {auth, database, storage} from './config'
 
 export {
   auth,
-  database
+  database,
+  storage
 }
