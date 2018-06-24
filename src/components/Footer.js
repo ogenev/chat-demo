@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core/styles'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import HomeIcon from '@material-ui/icons/Home'
-import FavoriteIcon from '@material-ui/icons/Favorite'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import Link from 'react-router-dom/Link'
+import ChatIcon from "@material-ui/icons/Chat"
 
 const styles = {
   root: {
@@ -16,8 +16,11 @@ const styles = {
 }
 
 class Footer extends React.Component {
-  state = {
-    value: 0,
+  constructor (props) {
+    super(props)
+    this.state = {
+      value: 0,
+    }
   }
 
   handleChange = (event, value) => {
@@ -37,8 +40,8 @@ class Footer extends React.Component {
         style={{position: 'absolute',bottom: 0, right: 0}}
       >
         <BottomNavigationAction component={Link} to="/home" label="Начало" icon={<HomeIcon />} />
-        <BottomNavigationAction component={Link} to="/testchat" label="Любими" icon={<FavoriteIcon />} />
-        <BottomNavigationAction label="До мен" icon={<LocationOnIcon />} />
+        <BottomNavigationAction component={Link} to="/mychats" label="Чатове" icon={<ChatIcon />} />
+        <BottomNavigationAction component={Link} to="/testchat" label="До мен" icon={<LocationOnIcon />} />
       </BottomNavigation>
     );
   }
