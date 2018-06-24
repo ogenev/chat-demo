@@ -9,19 +9,9 @@ import NotFound from './components/NotFound'
 import TestOffer from './components/Chat/TestOffer'
 import ChatWindow from './components/Chat/ChatWindow'
 import UserChats from './components/Chat/UserChats'
-import {auth} from './Firebase'
-
-const zaza = auth.currentUser
+import AppContext from './components/AppContext'
 
 class Routes extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {authUser: auth.currentUser}
-  }
-
-  componentDidMount () {
-    console.log(zaza)
-  }
   render () {
     return (
       <Switch>
@@ -48,14 +38,20 @@ class Routes extends React.Component {
           path='/testchat'
           component={TestOffer}
         />
-        <Route exact path='/mychats' render={() => {
-          if (this.state.authUser == null) {
-            return <Redirect to='/login' />
-          } else {
-            return <UserChats />
-          }
-        }}
-        />
+        <AppContext.Consumer>
+          {(context) => {
+            // Redirect user if not registered to login when click "chats button"
+            return (
+              <Route exact path='/mychats' render={() => {
+                if (context.authUser == null) {
+                  return <Redirect to='/login' />
+                } else {
+                  return <UserChats />
+                }
+              }}
+              />)
+          }}
+        </AppContext.Consumer>
         <Route
           exact
           path='/chat'
