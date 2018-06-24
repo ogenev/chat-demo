@@ -7,7 +7,6 @@ import AddingOffer from './components/AddingOffer'
 import PasswordForgetForm from './components/PasswordForget'
 import NotFound from './components/NotFound'
 import TestOffer from './components/Chat/TestOffer'
-import ChatWindow from './components/Chat/ChatWindow'
 import UserChats from './components/Chat/UserChats'
 import AppContext from './components/AppContext'
 
@@ -52,11 +51,6 @@ class Routes extends React.Component {
               />)
           }}
         </AppContext.Consumer>
-        <Route
-          exact
-          path='/chat'
-          component={ChatWindow}
-        />
         <Route exact path='*' component={NotFound} />
       </Switch>
     )

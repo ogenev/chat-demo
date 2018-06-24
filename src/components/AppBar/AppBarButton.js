@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import Link from 'react-router-dom/Link'
-import AppContext from '../../AppContext'
+import AppContext from '../AppContext'
 import ButtonMenu from './ButtonMenu'
 
 const LoginLink = props => <Link to='/login' {...props} />

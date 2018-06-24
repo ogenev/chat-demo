@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import ResDrawer from './ResDrawer/MainComponent'
-import firebase from 'firebase/app'
+import MainComponent from './MainComponent'
+import {auth} from '../Firebase'
 import AppContext from './AppContext'
 import { Switch, Route } from 'react-router-dom'
 import ChatWindow from './Chat/ChatWindow'
@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   componentDidMount () {
-    firebase.auth().onAuthStateChanged(user => {
+    auth.onAuthStateChanged(user => {
       if (user) {
         this.setState({ authUser: user })
       } else {
@@ -28,8 +28,8 @@ class App extends Component {
     return (
       <AppContext.Provider value={this.state}>
         <Switch>
-          <Route path='/chat' component={ChatWindow} />
-          <Route path='/' component={ResDrawer} />
+          <Route exact path='/chat' component={ChatWindow} />
+          <Route path='/' component={MainComponent} />
         </Switch>
       </AppContext.Provider>
     )
