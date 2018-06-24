@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ResDrawer from './ResDrawer/index'
+import ResDrawer from './ResDrawer/MainComponent'
 import firebase from 'firebase/app'
 import AppContext from './AppContext'
 import { Switch, Route } from 'react-router-dom'
