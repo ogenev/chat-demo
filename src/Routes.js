@@ -45,7 +45,7 @@ class Routes extends React.Component {
                 if (context.authUser == null) {
                   return <Redirect to='/login' />
                 } else {
-                  return <UserChats />
+                  return <UserChats user={context.authUser} />
                 }
               }}
               />)
