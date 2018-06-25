@@ -18,6 +18,7 @@ class App extends Component {
     auth.onAuthStateChanged(user => {
       if (user) {
         this.setState({ authUser: user })
+        console.log(user.displayName)
       } else {
         this.setState({ authUser: null })
       }
