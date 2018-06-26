@@ -116,7 +116,6 @@ class ServiceDescription extends React.Component {
       }
     }
     if (this.state.images.length === 0) {
-      console.log('executing')
       database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
         UserId: this.state.UserId,
         name: this.state.name,
