@@ -29,11 +29,11 @@ const styles = theme => ({
 class ServiceDescription extends React.Component {
   state = {
     showBtn: 1,
-    UserId: "",
-    name: "",
-    price: "",
-    promo: "",
-    description: "",
+    UserId: '',
+    name: '',
+    price: '',
+    promo: '',
+    description: '',
     images: [],
     url: []
   };
@@ -43,26 +43,26 @@ class ServiceDescription extends React.Component {
     event.preventDefault()
     this.setState({
       UserId: sessionStorage.getItem('userId'),
-    });
+    })
     this.handleUpload()
   }
 
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
-    });
-  };
+    })
+  }
 
   calcPrice = (price) => {
     return parseFloat(parseFloat(price).toFixed(2)) * 100
-  };
+  }
 
   resetState = () => {
     this.setState({
-      name: "",
-      price: "",
-      promo: "",
-      description: "",
+      name: '',
+      price: '',
+      promo: '',
+      description: '',
       images: [],
       url: [],
       showBtn: 1
@@ -87,7 +87,7 @@ class ServiceDescription extends React.Component {
 
             },
             (err) => {
-              reject(err);
+              reject(err)
             },
             () => {
               storage.ref('images').child(image.name)
@@ -103,7 +103,7 @@ class ServiceDescription extends React.Component {
                       promo: this.calcPrice(this.state.promo),
                       description: this.state.description,
                       url: this.state.url
-                    });
+                    })
                     this.resetState()
                   }
                 })
@@ -123,7 +123,7 @@ class ServiceDescription extends React.Component {
         promo: parseFloat(parseFloat(this.state.promo).toFixed(2)) * 100,
         description: this.state.description,
         url: 'no images'
-      });
+      })
       this.resetState()
     }
   }
@@ -200,12 +200,12 @@ class ServiceDescription extends React.Component {
           </label>
         </form>
       </div>
-    );
+    )
   }
 }
 
 ServiceDescription.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
 export default withStyles(styles)(ServiceDescription)

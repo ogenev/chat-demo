@@ -21,27 +21,16 @@ const styles = theme => ({
   button: {
     margin: 20,
   },
-});
+})
 
 
 class MyProfile extends React.Component {
   state = {
-    UserId: "",
-    address: "",
-    website: "",
-    phone: "",
-    presentation: ""
-  }
-
-  mountTextField = (name, nameState) => {
-    if (name != null) {
-      name.on('value', snapshot => {
-        this.setState({[nameState]: snapshot.val()})
-      })
-    }
-    else {
-      this.setState({[nameState]: ""})
-    }
+    UserId: '',
+    address: '',
+    website: '',
+    phone: '',
+    presentation: ''
   }
 
   componentWillMount () {
@@ -49,15 +38,18 @@ class MyProfile extends React.Component {
     this.setState({
       UserId: currentUserId
     })
-    let address = database.ref().child(`users/${currentUserId}/address`)
-    let website = database.ref().child(`users/${currentUserId}/website`)
-    let phone = database.ref().child(`users/${currentUserId}/phone`)
-    let presentation = database.ref().child(`users/${currentUserId}/presentation`)
-    this.mountTextField(address, 'address')
-    this.mountTextField(website, 'website')
-    this.mountTextField(phone, 'phone')
-    this.mountTextField(presentation, 'presentation')
+    database.ref(`users/${currentUserId}/`).once('value')
+      .then(snapshot => {
+          let address = snapshot.val().address
+          let website = snapshot.val().website
+          let phone = snapshot.val().phone
+          let presentation = snapshot.val().presentation
 
+        this.setState({address: address,
+          website: website,
+          phone: phone,
+          presentation: presentation })
+      })
   }
 
   submitChanges = (event) => {
@@ -68,8 +60,8 @@ class MyProfile extends React.Component {
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
-    });
-  };
+    })
+  }
 
 
   handleUpload = () => {
@@ -163,6 +155,6 @@ class MyProfile extends React.Component {
 
 MyProfile.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
 export default withStyles(styles)(MyProfile)
