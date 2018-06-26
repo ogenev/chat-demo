@@ -31,8 +31,7 @@ class MyProfile extends React.Component {
     address: "",
     website: "",
     phone: "",
-    presentation: "",
-    showBtn: 1
+    presentation: ""
   }
 
   mountTextField = (name, nameState) => {
@@ -63,7 +62,6 @@ class MyProfile extends React.Component {
   }
 
   submitChanges = (event) => {
-    this.setState({showBtn: 0})
     event.preventDefault()
     this.handleUpload()
   }
@@ -74,9 +72,6 @@ class MyProfile extends React.Component {
     });
   };
 
-  showTheButton = () => {
-    this.setState({showBtn: 1})
-  }
 
   handleUpload = () => {
     database.ref(`users/${this.state.UserId}`).update({
@@ -85,14 +80,10 @@ class MyProfile extends React.Component {
       phone: this.state.phone,
       presentation: this.state.presentation
     })
-      setTimeout(this.showTheButton(), 1000)
   }
 
   render () {
     const {classes} = this.props
-
-    const isInvalid =
-      this.state.showBtn === 0
 
     return (
       <AppContext.Consumer>
@@ -162,7 +153,7 @@ class MyProfile extends React.Component {
                   margin="normal"
                 />
               </div>
-              <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={isInvalid}>
+              <Button type="submit" variant="contained" color="primary" className={classes.button}>
                 ЗАПАЗИ ПРОМЕНИТЕ
               </Button>
             </form>
