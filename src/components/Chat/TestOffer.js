@@ -11,7 +11,12 @@ export default props =>
       <AppContext.Consumer>
         {(context) => {
           // createdUid is hard coded for the user who created the offer
-          return <ChatButton authUser={context.authUser} createdUid={'5oeCQdKgrCXOohwRnB4fPgwnFE23'} />
+          return (
+            <div>
+              <ChatButton authUser={context.authUser} createdUid={'5oeCQdKgrCXOohwRnB4fPgwnFE23'} />
+              <ChatButton authUser={context.authUser} createdUid={'5oeCQdKgrCXOohwRnB4fPgwnGR69'} />
+            </div>
+          )
         }}
       </AppContext.Consumer>
     </div>
