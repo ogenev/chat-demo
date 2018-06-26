@@ -6,7 +6,7 @@ class AllUserChats extends React.Component {
   constructor (props) {
     super(props)
 
-    this.userId = this.props.user.uid
+    this.userId = this.props.authUser.uid
     this.state = {allChats: []}
     this.allChatRef = database.ref().child(`/users/${this.userId}/activeThreads`)
     this.listenForChats = this.listenForChats.bind(this)
@@ -35,6 +35,7 @@ class AllUserChats extends React.Component {
     const userChats = this.state.allChats.map((chat, index) => {
       return (
         <UserMetaChat
+          authUser={this.props.authUser}
           threadId={chat.threadId}
           key={index}
         />
@@ -49,6 +50,10 @@ class AllUserChats extends React.Component {
       </div>
     )
   }
+}
+
+AllUserChats.defaultProps = {
+  authUser: ''
 }
 
 export default AllUserChats
