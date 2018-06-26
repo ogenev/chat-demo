@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { database, storage, auth } from '../Firebase'
+import { database, storage} from '../Firebase'
 
 const styles = theme => ({
   container: {
@@ -42,7 +42,7 @@ class ServiceDescription extends React.Component {
     this.setState({showBtn: 0})
     event.preventDefault()
     this.setState({
-      UserId: auth.currentUser.uid,
+      UserId: sessionStorage.getItem('userId'),
     });
     this.handleUpload()
   }

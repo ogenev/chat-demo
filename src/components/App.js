@@ -14,9 +14,12 @@ class App extends Component {
     }
   }
 
-  componentDidMount () {
+  componentWillMount () {
     auth.onAuthStateChanged(user => {
       if (user) {
+        // Store current user info in Session Storage
+        sessionStorage.setItem('displayName', user.displayName)
+        sessionStorage.setItem('userId', user.uid)
         this.setState({ authUser: user })
       } else {
         this.setState({ authUser: null })

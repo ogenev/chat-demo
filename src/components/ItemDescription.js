@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { database, storage, auth } from '../Firebase'
+import { database, storage} from '../Firebase'
 
 
 const styles = theme => ({
@@ -60,7 +60,7 @@ class ItemDescription extends React.Component {
       [name]: event.target.value,
     })
     this.setState({
-      UserId: auth.currentUser.uid,
+      UserId: sessionStorage.getItem('userId'),
     })
   }
 

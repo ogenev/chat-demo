@@ -1,5 +1,5 @@
 import React from 'react'
-import {auth, database} from '../../Firebase'
+import {database} from '../../Firebase'
 import ChatInput from './ChatInput'
 import AllMessages from './AllMessages'
 
@@ -11,7 +11,7 @@ class ChatWindow extends React.Component {
       allMessages: []
     }
 
-    this.user = auth.currentUser
+    this.user.uid = sessionStorage.getItem('userId')
 
     this.createdUid = this.props.location.state.createdUid
 

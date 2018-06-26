@@ -6,8 +6,7 @@ import FormControl from '@material-ui/core/FormControl'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import AppContext from './AppContext'
-import {auth, database} from "../Firebase"
+import {database} from "../Firebase"
 
 
 const styles = theme => ({
@@ -46,7 +45,7 @@ class MyProfile extends React.Component {
   }
 
   componentWillMount () {
-    let currentUserId = auth.currentUser.uid
+    let currentUserId = sessionStorage.getItem('userId')
     this.setState({
       UserId: currentUserId
     })
@@ -84,17 +83,16 @@ class MyProfile extends React.Component {
 
   render () {
     const {classes} = this.props
+    const displayName = sessionStorage.getItem('displayName')
 
     return (
-      <AppContext.Consumer>
-        {(context) => (
           <div>
             <form className={classes.container} noValidate autoComplete="off" onSubmit={this.submitChanges}>
               <FormControl className={classes.margin}><TextField
                 className={classes.margin}
                 id="input-with-icon-textfield"
                 label="Име"
-                value={context.authUser.displayName}
+                value={displayName}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -158,9 +156,7 @@ class MyProfile extends React.Component {
               </Button>
             </form>
           </div>
-        )}
-      </AppContext.Consumer>
-    );
+    )
   }
 }
 
