@@ -9,6 +9,7 @@ import NotFound from './components/NotFound'
 import TestOffer from './components/Chat/TestOffer'
 import AllUserChats from './components/Chat/AllUserChats'
 import AppContext from './components/AppContext'
+import MyProfile from './components/MyProfile'
 
 class Routes extends React.Component {
   render () {
@@ -30,7 +31,7 @@ class Routes extends React.Component {
           path='/home/:userId'
           component={AddingOffer}
         />
-
+        <Route exact path='/myprofile' component={MyProfile} />
         <Route exact path='/pw-forgot' component={PasswordForgetForm} />
         <Route
           exact
