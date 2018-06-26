@@ -52,6 +52,13 @@ class ChatWindow extends React.Component {
         }).catch(err => console.log(err))
       )
         .catch(err => console.log(err))
+      // Making chatThreadMeta with the chat details:
+      let now = new Date().getTime()
+      database.ref(`chatThreadMeta/${chatId}`).set({
+        createdAt: now,
+        createdByUserId: this.user.uid,
+        threadId: chatId
+      }).catch(err => console.log(err))
     }
     // Get massage from ChatInput and send it to database:
     let now = new Date().getTime()
