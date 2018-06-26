@@ -7,7 +7,7 @@ import AddingOffer from './components/AddingOffer'
 import PasswordForgetForm from './components/PasswordForget'
 import NotFound from './components/NotFound'
 import TestOffer from './components/Chat/TestOffer'
-import UserChats from './components/Chat/UserChats'
+import AllUserChats from './components/Chat/AllUserChats'
 import AppContext from './components/AppContext'
 
 class Routes extends React.Component {
@@ -45,7 +45,7 @@ class Routes extends React.Component {
                 if (context.authUser == null) {
                   return <Redirect to='/login' />
                 } else {
-                  return <UserChats user={context.authUser} />
+                  return <AllUserChats user={context.authUser} />
                 }
               }}
               />)
