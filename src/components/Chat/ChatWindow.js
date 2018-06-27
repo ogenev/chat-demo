@@ -11,7 +11,8 @@ class ChatWindow extends React.Component {
       allMessages: []
     }
 
-    this.user.uid = sessionStorage.getItem('userId')
+    this.userId = sessionStorage.getItem('userId')
+    this.displayName = sessionStorage.getItem('displayName')
 
     this.createdUid = this.props.location.state.createdUid
 
@@ -22,8 +23,8 @@ class ChatWindow extends React.Component {
   }
   // Generate unique threadId for the database:
   generateChatId () {
-    if (this.user.uid > this.createdUid) return `${this.user.uid}-${this.createdUid}`
-    else return `${this.createdUid}-${this.user.uid}`
+    if (this.userId > this.createdUid) return `${this.userId}-${this.createdUid}`
+    else return `${this.createdUid}-${this.userId}`
   }
 
   componentDidMount () {
@@ -44,7 +45,7 @@ class ChatWindow extends React.Component {
     */
     if (this.state.allMessages.length === 0) {
       const chatId = this.generateChatId()
-      database.ref(`users/${this.user.uid}/activeThreads/${chatId}`).set({
+      database.ref(`users/${this.userId}/activeThreads/${chatId}`).set({
         threadId: chatId
       }).then(
         database.ref(`users/${this.createdUid}/activeThreads/${chatId}`).set({
@@ -56,7 +57,7 @@ class ChatWindow extends React.Component {
       let now = new Date().getTime()
       database.ref(`chatThreadMeta/${chatId}`).set({
         createdAt: now,
-        startedByUserId: this.user.uid,
+        startedByUserId: this.userId,
         threadId: chatId,
         receivedByUserId: this.createdUid
       }).catch(err => console.log(err))
@@ -64,8 +65,8 @@ class ChatWindow extends React.Component {
     // Get massage from ChatInput and send it to database:
     let now = new Date().getTime()
     let messageData = {
-      userId: this.user.uid,
-      displayName: this.user.displayName,
+      userId: this.userId,
+      displayName: this.displayName,
       chatMessage: message,
       chatTimestamp: now
       // order: -1 * now
