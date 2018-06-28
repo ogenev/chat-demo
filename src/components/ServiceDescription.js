@@ -27,25 +27,33 @@ const styles = theme => ({
 });
 
 class ServiceDescription extends React.Component {
-  state = {
-    showBtn: 1,
-    UserId: "",
-    offerName: "",
-    price: "",
-    promoPrice: "",
-    discount: false,
-    discountPercent: null,
-    description: "",
-    images: [],
-    url: []
-  };
+  constructor (props) {
+    super(props)
+    this.state = {
+      showBtn: true,
+      UserId: sessionStorage.getItem('userId'),
+      offerName: "",
+      price: "",
+      promoPrice: "",
+      discount: false,
+      discountPercent: null,//
+      description: "",
+      images: [],
+      url: []
+    }
+
+  }
+
+// componentDidMount () {
+//   this.userId = sessionStorage.getItem('userId')
+//   this.setState({
+//     UserId: this.userId,
+//   })
+// }
 
   createOffer = (event) => {
-    this.setState({showBtn: 0})
+    this.setState({showBtn: false})
     event.preventDefault()
-    this.setState({
-      UserId: sessionStorage.getItem('userId'),
-    });
     this.handleUpload()
   }
 
@@ -61,7 +69,7 @@ class ServiceDescription extends React.Component {
 
   resetState = () => {
     this.setState({
-      showBtn: 1,
+      showBtn: true,
       UserId: "",
       offerName: "",
       price: "",
@@ -146,7 +154,7 @@ class ServiceDescription extends React.Component {
     const { classes } = this.props
 
     const isInvalid =
-      this.state.offerName.length < 3 || this.state.price === 0 || this.state.showBtn === 0
+      this.state.offerName.length < 3 || this.state.price === 0 || this.state.showBtn === false
 
     return (
       <div>
