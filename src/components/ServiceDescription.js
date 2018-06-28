@@ -27,22 +27,31 @@ const styles = theme => ({
 });
 
 class ServiceDescription extends React.Component {
-  state = {
-    showBtn: 1,
-    UserId: '',
-    name: '',
-    price: '',
-    promo: '',
-    description: '',
-    images: [],
-    url: []
-  };
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      showBtn: 1,
+      UserId: '',
+      name: '',
+      price: '',
+      promo: '',
+      description: '',
+      images: [],
+      url: []
+    }
+
+    this.userId = sessionStorage.getItem('userId')
+  }
+
+
+
 
   createOffer = (event) => {
     this.setState({showBtn: 0})
     event.preventDefault()
     this.setState({
-      UserId: sessionStorage.getItem('userId'),
+      UserId: this.userId,
     })
     this.handleUpload()
   }
