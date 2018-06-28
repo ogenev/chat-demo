@@ -31,9 +31,9 @@ const styles = theme => ({
 class ItemDescription extends React.Component {
   state = {
     UserId: "",
-    name: "",
+    offerName: "",
     price: 0,
-    promo: 0,
+    promoPrice: 0,
     description: "",
     image: null,
     url: ''
@@ -45,9 +45,9 @@ class ItemDescription extends React.Component {
     this.handleUpload()
     database.ref('offers/items').set({
       UserId: this.state.UserId,
-      name: this.state.name,
+      offerName: this.state.offerName,
       price: this.state.price,
-      promo: this.state.promo,
+      promoPrice: this.state.promoPrice,
       description: this.state.description,
       url: this.state.url
     })
@@ -77,7 +77,7 @@ class ItemDescription extends React.Component {
 
   handleUpload = () => {
     const {image} = this.state
-    const uploadTask = storage.ref(`images/${image.name}`).put(image)
+    const uploadTask = storage.ref(`images/${image.offerName}`).put(image)
     uploadTask.on('state_changed',
       (snapshot) => {
 
@@ -86,7 +86,7 @@ class ItemDescription extends React.Component {
         console.log(error)
       },
       () => {
-        storage.ref('images').child(image.name).getDownloadURL().then(url => {
+        storage.ref('images').child(image.offerName).getDownloadURL().then(url => {
           this.setState({url: url})
         })
       })
@@ -123,7 +123,7 @@ class ItemDescription extends React.Component {
             name="promo"
             id="number"
             label="Промоционална цена"
-            onChange={this.handleChangeNum('promo')}
+            onChange={this.handleChangeNum('promoPrice')}
             type="number"
             className={classes.textField}
             margin="normal"

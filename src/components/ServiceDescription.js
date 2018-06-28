@@ -30,9 +30,11 @@ class ServiceDescription extends React.Component {
   state = {
     showBtn: 1,
     UserId: "",
-    name: "",
+    offerName: "",
     price: "",
-    promo: "",
+    promoPrice: "",
+    discount: false,
+    discountPercent: null,
     description: "",
     images: [],
     url: []
@@ -59,13 +61,16 @@ class ServiceDescription extends React.Component {
 
   resetState = () => {
     this.setState({
-      name: "",
+      showBtn: 1,
+      UserId: "",
+      offerName: "",
       price: "",
-      promo: "",
+      promoPrice: "",
+      discount: false,
+      discountPercent: null,
       description: "",
       images: [],
-      url: [],
-      showBtn: 1
+      url: []
     })
   }
 
@@ -74,13 +79,19 @@ class ServiceDescription extends React.Component {
   }
 
   handleUpload = () => {
+    if(this.state.promoPrice.length > 0) {
+      this.setState({discount: true})
+        let currentDiscountPercent
+      currentDiscountPercent = (this.state.price - this.state.promoPrice) / this.state.price * 100
+      currentDiscountPercent = Math.round(parseFloat(currentDiscountPercent))
+      this.setState({discountPercent: currentDiscountPercent})
+    }
     if (this.state.images.length > 0) {
       const {images} = this.state
       //1. Upload images
       //2. Upload urls
-      //const uploadTask = storage.ref(`images/${image.name}`).put(image)
-      let imagePromise = (image) => {
-        let uploadTask = storage.ref(`images/${image.name}`).put(image)
+      let imagePromise = (offerImage) => {
+        let uploadTask = storage.ref(`images/${offerImage.name}`).put(offerImage)
         return new Promise((resolve, reject) => {
           uploadTask.on('state_changed',
             (snapshot) => {
@@ -90,17 +101,18 @@ class ServiceDescription extends React.Component {
               reject(err);
             },
             () => {
-              storage.ref('images').child(image.name)
+              storage.ref('images').child(offerImage.name)
               uploadTask.snapshot.ref.getDownloadURL()
                 .then(newUrl => {
                   this.setState({url: [...this.state.url, newUrl]})
                   if (this.state.url.length === images.length) {
-                    console.log('executing one')
-                    database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
+                    database.ref(`offers/services/${this.state.offerName}-${this.state.UserId}`).set({
                       UserId: this.state.UserId,
-                      name: this.state.name,
+                      offerName: this.state.offerName,
                       price: this.calcPrice(this.state.price),
-                      promo: this.calcPrice(this.state.promo),
+                      promoPrice: this.calcPrice(this.state.promoPrice),
+                      discount: this.state.discount,
+                      discountPercent: this.state.discountPercent,
                       description: this.state.description,
                       url: this.state.url
                     });
@@ -116,11 +128,13 @@ class ServiceDescription extends React.Component {
       }
     }
     if (this.state.images.length === 0) {
-      database.ref(`offers/services/${this.state.name}-${this.state.UserId}`).set({
+      database.ref(`offers/services/${this.state.offerName}-${this.state.UserId}`).set({
         UserId: this.state.UserId,
-        name: this.state.name,
+        offerName: this.state.offerName,
         price: parseFloat(parseFloat(this.state.price).toFixed(2)) * 100,
-        promo: parseFloat(parseFloat(this.state.promo).toFixed(2)) * 100,
+        promoPrice: parseFloat(parseFloat(this.state.promoPrice).toFixed(2)) * 100,
+        discount: this.state.discount,
+        discountPercent: this.state.discountPercent,
         description: this.state.description,
         url: 'no images'
       });
@@ -132,7 +146,7 @@ class ServiceDescription extends React.Component {
     const { classes } = this.props
 
     const isInvalid =
-      this.state.name.length < 3 || this.state.price === 0 || this.state.showBtn === 0
+      this.state.offerName.length < 3 || this.state.price === 0 || this.state.showBtn === 0
 
     return (
       <div>
@@ -142,9 +156,9 @@ class ServiceDescription extends React.Component {
             required
             id="name"
             label= "Услуга"
-            onChange={this.handleChange('name')}
+            onChange={this.handleChange('offerName')}
             placeholder= "наименование"
-            value={this.state.name}
+            value={this.state.offerName}
             className={classes.textField}
             margin="normal"
           />
@@ -163,8 +177,8 @@ class ServiceDescription extends React.Component {
             name="promo"
             id="number"
             label="Промоционална цена"
-            onChange={this.handleChange('promo')}
-            value={this.state.promo}
+            onChange={this.handleChange('promoPrice')}
+            value={this.state.promoPrice}
             type="number"
             className={classes.textField}
             margin="normal"
