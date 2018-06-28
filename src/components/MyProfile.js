@@ -152,7 +152,7 @@ class MyProfile extends React.Component {
                 />
               </div>
               <Button type="submit" variant="contained" color="primary" className={classes.button}>
-                ЗАПАЗИ ПРОМЕНИТЕ
+                Чат с {displayName}
               </Button>
             </form>
           </div>

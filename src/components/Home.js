@@ -5,7 +5,7 @@ class Home extends React.Component {
   goToAddOffer = event => {
 
     event.preventDefault()
-    this.props.history.push(`/home/1`)
+    this.props.history.push(`/addoffer`)
   }
 
   render() {

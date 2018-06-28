@@ -28,7 +28,7 @@ class Routes extends React.Component {
         />
         <Route exact path='/home' component={Home} />
         <Route
-          path='/home/:userId'
+          exact path='/addoffer'
           component={AddingOffer}
         />
         <Route exact path='/myprofile' component={MyProfile} />

@@ -47,9 +47,9 @@ class ServiceDescription extends React.Component {
     this.handleUpload()
   }
 
-  handleChange = name => event => {
+  handleChange = attributeName => event => {
     this.setState({
-      [name]: event.target.value,
+      [attributeName]: event.target.value,
     });
   };
 
