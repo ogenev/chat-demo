@@ -3,7 +3,7 @@ import MainComponent from './MainComponent'
 import {auth} from '../Firebase'
 import AppContext from './AppContext'
 import { Switch, Route } from 'react-router-dom'
-import ChatWindow from './ChatWindow/ChatWindow'
+import ChatWindow from './ChatWindow'
 
 class App extends Component {
   constructor (props) {

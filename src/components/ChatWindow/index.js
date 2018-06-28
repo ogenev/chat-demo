@@ -37,7 +37,6 @@ class ChatWindow extends React.Component {
 
   // Logic when sending message in ChatInput:
 
-
   listenForMessages (chatRef) {
     const allMessages = []
     // Get all messages from database and set the state
@@ -53,7 +52,11 @@ class ChatWindow extends React.Component {
       <Fragment>
         <ChatAppBar />
         <AllChatMessages messages={this.state.allMessages} />
-        <ChatInputContainer createdUid={this.createdUid} />
+        <ChatInputContainer
+          createdUid={this.createdUid}
+          allMessages={this.state.allMessages.length}
+          chatRef={this.chatRef}
+          chatId={this.generateChatId()} />
       </Fragment>
     )
   }

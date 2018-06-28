@@ -1,33 +1,26 @@
 import React, { Fragment } from 'react'
 import { database } from '../../Firebase'
 import ChatInput from './ChatInput'
+import PropTypes from 'prop-types'
 
 class ChatInputContainer extends React.Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-      allMessages: []
-    }
     this.userId = sessionStorage.getItem('userId')
     this.displayName = sessionStorage.getItem('displayName')
-    this.chatRef = database.ref().child(`/chatThreads/${this.generateChatId()}`)
     this.onSend = this.onSend.bind(this)
   }
 
   // Generate unique threadId for the database:
-  generateChatId () {
-    if (this.userId > this.props.createdUid) return `${this.userId}-${this.props.createdUid}`
-    else return `${this.props.createdUid}-${this.userId}`
-  }
 
   onSend (message) {
     /*
     Check if this is the first message between users and
     add the threadId to both users in the database if true
     */
-    if (this.state.allMessages.length === 0) {
-      const chatId = this.generateChatId()
+    if (this.props.allMessages === 0) {
+      const chatId = this.props.chatId
       database.ref(`users/${this.userId}/activeThreads/${chatId}`).set({
         threadId: chatId
       }).then(
@@ -57,7 +50,7 @@ class ChatInputContainer extends React.Component {
     }
     // Database path:
     // chatThread/threadId(generateChatId)/messageId(firebase generated)/messageData
-    this.chatRef.push(messageData)
+    this.props.chatRef.push(messageData)
   }
 
   render () {
@@ -67,6 +60,13 @@ class ChatInputContainer extends React.Component {
       </Fragment>
     )
   }
+}
+
+ChatInputContainer.propTypes = {
+  createdUid: PropTypes.string.isRequired,
+  allMessages: PropTypes.number.isRequired,
+  chatRef: PropTypes.object.isRequired,
+  chatId: PropTypes.string.isRequired
 }
 
 export default ChatInputContainer
