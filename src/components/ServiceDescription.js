@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { database, storage} from '../Firebase'
+let shortid = require('shortid');
 
 const styles = theme => ({
   container: {
@@ -26,6 +27,8 @@ const styles = theme => ({
   }
 });
 
+
+
 class ServiceDescription extends React.Component {
   constructor (props) {
     super(props)
@@ -39,22 +42,18 @@ class ServiceDescription extends React.Component {
       discountPercent: null,//
       description: "",
       images: [],
-      url: []
+      url: [],
+      offerId: shortid.generate(),
     }
 
   }
 
-// componentDidMount () {
-//   this.userId = sessionStorage.getItem('userId')
-//   this.setState({
-//     UserId: this.userId,
-//   })
-// }
 
   createOffer = (event) => {
-    this.setState({showBtn: false})
     event.preventDefault()
-    this.handleUpload()
+    this.setState({showBtn: false})
+    this.setState({offerId: shortid.generate()})
+    this.setDiscount()
   }
 
   handleChange = attributeName => event => {
@@ -64,13 +63,17 @@ class ServiceDescription extends React.Component {
   };
 
   calcPrice = (price) => {
-    return parseFloat(parseFloat(price).toFixed(2)) * 100
+    if (price === "") {
+      return ""
+    }
+    else {
+      return parseFloat(parseFloat(price).toFixed(2)) * 100
+    }
   };
 
   resetState = () => {
     this.setState({
       showBtn: true,
-      UserId: "",
       offerName: "",
       price: "",
       promoPrice: "",
@@ -78,22 +81,31 @@ class ServiceDescription extends React.Component {
       discountPercent: null,
       description: "",
       images: [],
-      url: []
+      url: [],
+      offerId: ""
     })
+    this.setState({offerId: shortid.generate()})
   }
 
   fileChangedHandler = (event) => {
     this.setState({images: event.target.files})
   }
 
-  handleUpload = () => {
-    if(this.state.promoPrice.length > 0) {
+  setDiscount () {
+    if (this.state.promoPrice.length > 0 && this.state.price > this.state.promoPrice) {
       this.setState({discount: true})
-        let currentDiscountPercent
+      let currentDiscountPercent
       currentDiscountPercent = (this.state.price - this.state.promoPrice) / this.state.price * 100
       currentDiscountPercent = Math.round(parseFloat(currentDiscountPercent))
-      this.setState({discountPercent: currentDiscountPercent})
+      this.setState({discountPercent: currentDiscountPercent}, () => {this.handleUpload()})
     }
+    else {
+      this.handleUpload()
+    }
+  }
+
+  handleUpload = () => {
+
     if (this.state.images.length > 0) {
       const {images} = this.state
       //1. Upload images
@@ -114,14 +126,15 @@ class ServiceDescription extends React.Component {
                 .then(newUrl => {
                   this.setState({url: [...this.state.url, newUrl]})
                   if (this.state.url.length === images.length) {
-                    database.ref(`offers/services/${this.state.offerName}-${this.state.UserId}`).set({
+                    database.ref(`offers/services/${this.state.offerId}`).set({
                       UserId: this.state.UserId,
+                      offerId: this.state.offerId,
                       offerName: this.state.offerName,
+                      description: this.state.description,
                       price: this.calcPrice(this.state.price),
                       promoPrice: this.calcPrice(this.state.promoPrice),
                       discount: this.state.discount,
                       discountPercent: this.state.discountPercent,
-                      description: this.state.description,
                       url: this.state.url
                     });
                     this.resetState()
@@ -136,14 +149,15 @@ class ServiceDescription extends React.Component {
       }
     }
     if (this.state.images.length === 0) {
-      database.ref(`offers/services/${this.state.offerName}-${this.state.UserId}`).set({
+      database.ref(`offers/services/${this.state.offerId}`).set({
         UserId: this.state.UserId,
+        offerId: this.state.offerId,
         offerName: this.state.offerName,
-        price: parseFloat(parseFloat(this.state.price).toFixed(2)) * 100,
-        promoPrice: parseFloat(parseFloat(this.state.promoPrice).toFixed(2)) * 100,
+        description: this.state.description,
+        price: this.calcPrice(this.state.price),
+        promoPrice: this.calcPrice(this.state.promoPrice),
         discount: this.state.discount,
         discountPercent: this.state.discountPercent,
-        description: this.state.description,
         url: 'no images'
       });
       this.resetState()
