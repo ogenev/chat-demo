@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Message extends React.Component {
+class ChatMessage extends React.Component {
   render () {
     return (
       <div className={`message`}>
@@ -15,9 +15,9 @@ class Message extends React.Component {
   }
 }
 
-Message.defaultProps = {
+ChatMessage.defaultProps = {
   chatMessage: '',
-  displayName: '',
+  displayName: ''
 }
 
-export default Message
+export default ChatMessage

@@ -1,8 +1,8 @@
 import React from 'react'
 
-import Message from './Message'
+import ChatMessage from './ChatMessage'
 
-class AllMessages extends React.Component {
+class AllChatMessages extends React.Component {
   componentDidUpdate () {
     // There is a new message in the state, scroll to bottom of list
     const objDiv = document.getElementById('messageList')
@@ -13,7 +13,7 @@ class AllMessages extends React.Component {
     // Loop through all the messages in the state and create a Message component
     const messages = this.props.messages.map((message, i) => {
       return (
-        <Message
+        <ChatMessage
           key={i}
           displayName={message.displayName}
           chatMessage={message.chatMessage}
@@ -29,8 +29,8 @@ class AllMessages extends React.Component {
   }
 }
 
-AllMessages.defaultProps = {
+AllChatMessages.defaultProps = {
   messages: []
 }
 
-export default AllMessages
+export default AllChatMessages

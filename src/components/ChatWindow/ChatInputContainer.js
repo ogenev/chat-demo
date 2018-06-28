@@ -1,43 +1,26 @@
-import React from 'react'
-import {database} from '../../Firebase'
+import React, { Fragment } from 'react'
+import { database } from '../../Firebase'
 import ChatInput from './ChatInput'
-import AllMessages from './AllMessages'
 
-class ChatWindow extends React.Component {
+class ChatInputContainer extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
       allMessages: []
     }
-
     this.userId = sessionStorage.getItem('userId')
     this.displayName = sessionStorage.getItem('displayName')
-
-    this.createdUid = this.props.location.state.createdUid
-
     this.chatRef = database.ref().child(`/chatThreads/${this.generateChatId()}`)
-    this.chatRefData = this.chatRef.orderByChild('orders')
     this.onSend = this.onSend.bind(this)
-    this.listenForMessages = this.listenForMessages.bind(this)
   }
+
   // Generate unique threadId for the database:
   generateChatId () {
-    if (this.userId > this.createdUid) return `${this.userId}-${this.createdUid}`
-    else return `${this.createdUid}-${this.userId}`
+    if (this.userId > this.props.createdUid) return `${this.userId}-${this.props.createdUid}`
+    else return `${this.props.createdUid}-${this.userId}`
   }
 
-  componentDidMount () {
-    // start listen to data changes on mount
-    this.listenForMessages(this.chatRefData)
-  }
-
-  componentWillUnmount () {
-    // Stop listen to data changes on unmount
-    this.chatRefData.off()
-  }
-
-  // Logic when sending message in ChatInput:
   onSend (message) {
     /*
     Check if this is the first message between users and
@@ -48,18 +31,19 @@ class ChatWindow extends React.Component {
       database.ref(`users/${this.userId}/activeThreads/${chatId}`).set({
         threadId: chatId
       }).then(
-        database.ref(`users/${this.createdUid}/activeThreads/${chatId}`).set({
+        database.ref(`users/${this.props.createdUid}/activeThreads/${chatId}`).set({
           threadId: chatId
         }).catch(err => console.log(err))
       )
         .catch(err => console.log(err))
       // Making chatThreadMeta with the chat details:
+      // Need to fix the meta
       let now = new Date().getTime()
       database.ref(`chatThreadMeta/${chatId}`).set({
         createdAt: now,
         startedByUserId: this.userId,
         threadId: chatId,
-        receivedByUserId: this.createdUid
+        receivedByUserId: this.props.createdUid
       }).catch(err => console.log(err))
     }
     // Get massage from ChatInput and send it to database:
@@ -76,27 +60,13 @@ class ChatWindow extends React.Component {
     this.chatRef.push(messageData)
   }
 
-  listenForMessages (chatRef) {
-    const allMessages = []
-    // Get all messages from database and set the state
-    chatRef.on('child_added', snapshot => {
-      allMessages.push(snapshot.val())
-      this.setState({
-        allMessages: allMessages})
-    })
-  }
-
   render () {
     return (
-      <div>
-        <h3>
-          Chat window
-        </h3>
-        <AllMessages messages={this.state.allMessages} />
+      <Fragment>
         <ChatInput onSend={this.onSend} />
-      </div>
+      </Fragment>
     )
   }
 }
 
-export default ChatWindow
+export default ChatInputContainer

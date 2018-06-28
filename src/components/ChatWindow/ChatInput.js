@@ -47,7 +47,7 @@ class ChatInput extends React.Component {
     const isInvalid =
       chatInput === ''
     return (
-      <form className='chat-input' onSubmit={this.submitHandler}>
+      <form className='chat-input' onSubmit={this.submitHandler} >
         <Input
           onChange={this.textChangeHandler}
           value={chatInput}

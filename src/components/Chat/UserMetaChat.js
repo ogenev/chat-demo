@@ -1,5 +1,5 @@
 import React from 'react'
-import { database } from '../../Firebase'
+import { database } from '../../Firebase/index'
 import { withRouter } from 'react-router-dom'
 import ListItem from '@material-ui/core/ListItem'
 

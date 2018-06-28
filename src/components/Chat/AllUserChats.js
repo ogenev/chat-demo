@@ -1,6 +1,6 @@
 import React from 'react'
 import UserMetaChat from './UserMetaChat'
-import { database } from '../../Firebase'
+import { database } from '../../Firebase/index'
 
 class AllUserChats extends React.Component {
   constructor (props) {
