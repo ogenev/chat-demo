@@ -21,7 +21,7 @@ const styles = theme => ({
     borderTop: '1px solid',
     borderColor: '#e6e6e6',
     display: 'flex',
-    position: 'absolute',
+    position: 'fixed',
     bottom: 0,
     right: 0,
     left: 0,
@@ -62,13 +62,13 @@ class ChatInput extends React.Component {
     const isInvalid =
       chatInput === ''
     return (
-      <form className='chat-input' onSubmit={this.submitHandler} >
-        <div className={classes.inputContainer}>
+      <div className={classes.inputContainer}>
+        <form onSubmit={this.submitHandler} >
           <Input
             onChange={this.textChangeHandler}
             value={chatInput}
             disableUnderline
-            fullWidth
+            // fullWidth
             autoFocus
             placeholder='Напиши съобщение...'
             className={classes.input}
@@ -80,8 +80,8 @@ class ChatInput extends React.Component {
             type='submit' className={classes.button} mini size='small'>
             <SendIcon className={classes.sendIcon} />
           </Button>
-        </div>
-      </form>
+        </form>
+      </div>
     )
   }
 }
