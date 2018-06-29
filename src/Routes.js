@@ -3,13 +3,13 @@ import RegisterForm from './components/RegisterForm'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import LoginForm from './components/LoginForm'
 import Home from './components/Home'
-import AddingOffer from './components/AddingOffer'
+import AddingOffer from './components/AddingOffer/AddingOffer'
 import PasswordForgetForm from './components/PasswordForget'
 import NotFound from './components/NotFound'
 import TestOffer from './components/Chat/TestOffer'
 import AllUserChats from './components/Chat/AllUserChats'
 import AppContext from './components/AppContext'
-import MyProfile from './components/MyProfile'
+import UserProfile from './components/UserProfile/UserProfile'
 
 class Routes extends React.Component {
   render () {
@@ -31,7 +31,7 @@ class Routes extends React.Component {
           exact path='/addoffer'
           component={AddingOffer}
         />
-        <Route exact path='/myprofile' component={MyProfile} />
+        <Route exact path='/myprofile' component={UserProfile} />
         <Route exact path='/pw-forgot' component={PasswordForgetForm} />
         <Route
           exact
