@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import Button from '@material-ui/core/Button'
+import SendIcon from '@material-ui/icons/Send'
 
 const styles = theme => ({
   input: {
@@ -11,9 +12,10 @@ const styles = theme => ({
   button: {
     position: 'absolute',
     right: '1em',
-    bottom: 10
+    bottom: 3
   },
-  rightIcon: {
+  sendIcon: {
+    fontSize: 36
   },
   inputContainer: {
     borderTop: '1px solid',
@@ -25,10 +27,6 @@ const styles = theme => ({
     left: 0,
     background: '#fafafa',
     padding: 5
-  },
-  btnText:{
-    color: '#3f51b5',
-    fontSize: 13
   }
 
 })
@@ -80,7 +78,7 @@ class ChatInput extends React.Component {
           />
           <Button variant='text' disabled={isInvalid} color={'primary'}
             type='submit' className={classes.button} mini size='small'>
-            <span className={classes.btnText}>Изпрати</span>
+            <SendIcon className={classes.sendIcon} />
           </Button>
         </div>
       </form>
