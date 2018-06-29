@@ -6,14 +6,31 @@ import Button from '@material-ui/core/Button'
 
 const styles = theme => ({
   input: {
-    margin: theme.spacing.unit
+    margin: 7
   },
   button: {
-    margin: theme.spacing.unit
+    position: 'absolute',
+    right: '1em',
+    bottom: 10
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit
+  },
+  inputContainer: {
+    borderTop: '1px solid',
+    borderColor: '#e6e6e6',
+    display: 'flex',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    background: '#fafafa',
+    padding: 5
+  },
+  btnText:{
+    color: '#3f51b5',
+    fontSize: 13
   }
+
 })
 
 class ChatInput extends React.Component {
@@ -48,19 +65,24 @@ class ChatInput extends React.Component {
       chatInput === ''
     return (
       <form className='chat-input' onSubmit={this.submitHandler} >
-        <Input
-          onChange={this.textChangeHandler}
-          value={chatInput}
-          placeholder='Напиши твоето съобщение...'
-          className={classes.input}
-          inputProps={{
-            'aria-label': 'Description'
-          }}
-        />
-        <Button variant='contained' color='primary' disabled={isInvalid}
-          type='submit' className={classes.button} size='small'>
-          Изпрати
-        </Button>
+        <div className={classes.inputContainer}>
+          <Input
+            onChange={this.textChangeHandler}
+            value={chatInput}
+            disableUnderline
+            fullWidth
+            autoFocus
+            placeholder='Напиши съобщение...'
+            className={classes.input}
+            inputProps={{
+              'aria-label': 'Description'
+            }}
+          />
+          <Button variant='text' disabled={isInvalid} color={'primary'}
+            type='submit' className={classes.button} mini size='small'>
+            <span className={classes.btnText}>Изпрати</span>
+          </Button>
+        </div>
       </form>
     )
   }
