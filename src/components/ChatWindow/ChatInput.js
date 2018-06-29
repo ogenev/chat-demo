@@ -27,6 +27,10 @@ const styles = theme => ({
     left: 0,
     background: '#fafafa',
     padding: 5
+  },
+  form: {
+    width: '100%',
+    paddingRight: 90
   }
 
 })
@@ -63,12 +67,12 @@ class ChatInput extends React.Component {
       chatInput === ''
     return (
       <div className={classes.inputContainer}>
-        <form onSubmit={this.submitHandler} >
+        <form onSubmit={this.submitHandler} className={classes.form}>
           <Input
             onChange={this.textChangeHandler}
             value={chatInput}
             disableUnderline
-            // fullWidth
+            fullWidth
             autoFocus
             placeholder='Напиши съобщение...'
             className={classes.input}
