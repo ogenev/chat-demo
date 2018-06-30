@@ -4,10 +4,16 @@ import Toolbar from '@material-ui/core/Toolbar'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import BackChatBtn from './BackChatBtn'
+import ReceiverProfileInfo from './ReceiverProfileInfo'
+import Grid from '@material-ui/core/Grid'
 
 const styles = () => ({
   toolbar: {
-    paddingLeft: 0
+    padding: 0
+  },
+  centerGrid: {
+    position: 'relative',
+    right: '8%'
   }
 })
 
@@ -18,7 +24,15 @@ class ChatAppBar extends React.Component {
     return (
       <AppBar position={'static'}>
         <Toolbar className={classes.toolbar}>
-          <BackChatBtn />
+          <Grid container alignItems={'center'} justify={'space-between'} >
+            <Grid item >
+              <BackChatBtn />
+            </Grid>
+            <Grid item className={classes.centerGrid}>
+              <ReceiverProfileInfo />
+            </Grid>
+            <Grid item />
+          </Grid>
         </Toolbar>
       </AppBar>
     )

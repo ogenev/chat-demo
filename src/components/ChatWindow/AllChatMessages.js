@@ -5,8 +5,8 @@ import ChatMessage from './ChatMessage'
 class AllChatMessages extends React.Component {
   componentDidUpdate () {
     // There is a new message in the state, scroll to bottom of list
-    const objDiv = document.getElementById('messageList')
-    objDiv.scrollTop = objDiv.scrollHeight
+    // const objDiv = document.getElementById('messageList')
+  //  objDiv.scrollTop = objDiv.scrollHeight
   }
 
   render () {
@@ -22,7 +22,7 @@ class AllChatMessages extends React.Component {
     })
 
     return (
-      <div className='messages' id='messageList'>
+      <div>
         { messages }
       </div>
     )
