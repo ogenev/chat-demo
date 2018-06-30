@@ -3,6 +3,7 @@ import {database} from '../../Firebase'
 import AllChatMessages from './AllChatMessages'
 import ChatAppBar from './ChatAppBar'
 import ChatInputContainer from './ChatInputContainer'
+import ChatOfferPanel from './ChatOfferPanel'
 
 class ChatWindow extends React.Component {
   constructor (props) {
@@ -51,6 +52,7 @@ class ChatWindow extends React.Component {
     return (
       <Fragment>
         <ChatAppBar />
+        <ChatOfferPanel />
         <AllChatMessages messages={this.state.allMessages} />
         <ChatInputContainer
           createdUid={this.createdUid}
