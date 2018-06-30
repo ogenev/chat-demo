@@ -10,9 +10,8 @@ const styles = theme => ({
     margin: 7
   },
   button: {
-    position: 'absolute',
-    right: '1em',
-    bottom: 3
+    position: 'relative',
+    bottom: '1%'
   },
   sendIcon: {
     fontSize: 36
@@ -20,17 +19,16 @@ const styles = theme => ({
   inputContainer: {
     borderTop: '1px solid',
     borderColor: '#e6e6e6',
-    display: 'flex',
     position: 'fixed',
     bottom: 0,
     right: 0,
     left: 0,
     background: '#fafafa',
-    padding: 5
+    padding: '1%'
   },
   form: {
     width: '100%',
-    paddingRight: 90
+    display: 'inline-flex'
   }
 
 })
