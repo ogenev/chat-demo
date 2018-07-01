@@ -8,7 +8,7 @@ class ChatInputContainer extends React.Component {
     super(props)
 
     this.userId = sessionStorage.getItem('userId')
-    this.displayName = sessionStorage.getItem('displayName')
+    this.senderName = sessionStorage.getItem('displayName')
     this.onSend = this.onSend.bind(this)
   }
 
@@ -19,6 +19,7 @@ class ChatInputContainer extends React.Component {
     Check if this is the first message between users and
     add the threadId to both users in the database if true
     */
+    const now = new Date().getTime()
     if (this.props.allMessages === 0) {
       const chatId = this.props.chatId
       database.ref(`users/${this.userId}/activeThreads/${chatId}`).set({
@@ -31,7 +32,6 @@ class ChatInputContainer extends React.Component {
         .catch(err => console.log(err))
       // Making chatThreadMeta with the chat details:
       // Need to fix the meta
-      let now = new Date().getTime()
       database.ref(`chatThreadMeta/${chatId}`).set({
         createdAt: now,
         startedByUserId: this.userId,
@@ -40,10 +40,10 @@ class ChatInputContainer extends React.Component {
       }).catch(err => console.log(err))
     }
     // Get massage from ChatInput and send it to database:
-    let now = new Date().getTime()
     let messageData = {
-      userId: this.userId,
-      displayName: this.displayName,
+      senderId: this.userId,
+      senderName: this.senderName,
+      receiverId: this.props.createdUid,
       chatMessage: message,
       chatTimestamp: now
       // order: -1 * now

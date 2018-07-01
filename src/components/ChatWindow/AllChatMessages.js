@@ -15,7 +15,7 @@ class AllChatMessages extends React.Component {
       return (
         <ChatMessage
           key={i}
-          displayName={message.displayName}
+          senderName={message.senderName}
           chatMessage={message.chatMessage}
         />
       )

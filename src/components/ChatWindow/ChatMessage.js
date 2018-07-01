@@ -5,7 +5,7 @@ class ChatMessage extends React.Component {
     return (
       <div className={`message`}>
         <div className='username'>
-          { this.props.displayName}
+          { this.props.senderName}
         </div>
         <div className='message-body'>
           { this.props.chatMessage }
@@ -17,7 +17,7 @@ class ChatMessage extends React.Component {
 
 ChatMessage.defaultProps = {
   chatMessage: '',
-  displayName: ''
+  senderName: ''
 }
 
 export default ChatMessage
