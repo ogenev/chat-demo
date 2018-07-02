@@ -46,7 +46,7 @@ class ReceiverProfileInfo extends React.Component {
         </Typography>
         <div className={classes.onlineContainer}>
           <Typography className={classes.online} >
-          online 3w ago
+          online 3m ago
           </Typography>
           <div className={classes.icon} />
           <span className={classes.circle} />
