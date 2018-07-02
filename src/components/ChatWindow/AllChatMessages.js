@@ -17,12 +17,13 @@ class AllChatMessages extends React.Component {
           key={i}
           senderName={message.senderName}
           chatMessage={message.chatMessage}
+          chatTimestamp={message.chatTimestamp}
         />
       )
     })
 
     return (
-      <div>
+      <div style={{paddingTop: '0.5em'}}>
         { messages }
       </div>
     )
