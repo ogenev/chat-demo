@@ -50,7 +50,7 @@ class ChatMessage extends React.Component {
           </div>
           <div className={classes.chatTimestamp}>
             <div className={classes.status}>
-              <Timestamp time={newTime} format={'full'} />
+              <Timestamp time={newTime} autoUpdate />
             </div>
           </div>
         </div>

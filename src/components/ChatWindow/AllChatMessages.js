@@ -3,10 +3,17 @@ import React from 'react'
 import ChatMessage from './ChatMessage'
 
 class AllChatMessages extends React.Component {
+  // There is a new message in the state, scroll to bottom of list
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: 'instant' })
+  }
+
   componentDidUpdate () {
-    // There is a new message in the state, scroll to bottom of list
-    // const objDiv = document.getElementById('messageList')
-  //  objDiv.scrollTop = objDiv.scrollHeight
+    this.scrollToBottom()
+  }
+
+  componentDidMount() {
+    this.scrollToBottom()
   }
 
   render () {
@@ -23,8 +30,11 @@ class AllChatMessages extends React.Component {
     })
 
     return (
-      <div style={{paddingTop: '0.5em'}}>
+      <div style={{paddingTop: '0.5em', overflow: 'scroll', height: '68vh'}}>
         { messages }
+        <div style={{ float:"left", clear: "both" }}
+             ref={(el) => { this.messagesEnd = el; }}>
+        </div>
       </div>
     )
   }
