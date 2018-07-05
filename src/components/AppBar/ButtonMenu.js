@@ -5,8 +5,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import firebase from 'firebase/app'
-import Link from "react-router-dom/Link";
+import { auth } from '../../Firebase'
+import Link from "react-router-dom/Link"
 
 class ButtonMenu extends React.Component {
   state = {
@@ -50,7 +50,7 @@ class ButtonMenu extends React.Component {
           onClose={this.handleClose}
         >
           <MenuItem component={Link} to="/myprofile">Моят Профил</MenuItem>
-          <MenuItem component={Link} to="/" onClick={() => (firebase.auth().signOut().then(function () {
+          <MenuItem component={Link} to="/" onClick={() => (auth.signOut().then(function () {
           }).catch(function (error) {
             console.log(error)
           }))}>Излез</MenuItem>

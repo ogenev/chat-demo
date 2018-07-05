@@ -30,9 +30,6 @@ const styles = () => ({
     color: '#b3b3b3',
     display: 'inline-block'
   },
-  status: {
-
-  }
 
 })
 
@@ -49,7 +46,7 @@ class ChatMessage extends React.Component {
             { this.props.chatMessage }
           </div>
           <div className={classes.chatTimestamp}>
-            <div className={classes.status}>
+            <div>
               <Timestamp time={newTime} autoUpdate />
             </div>
           </div>
