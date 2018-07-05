@@ -24,6 +24,7 @@ class ItemName extends React.Component {
         id="name"
         label= "Предмет"
         onChange={this.props.handleChange('offerName')}
+        disabled={this.props.hideInputs}
         placeholder= "наименование"
         value={this.props.offerName}
         className={classes.textField}

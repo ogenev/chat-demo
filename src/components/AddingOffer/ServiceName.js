@@ -28,6 +28,7 @@ class ServiceName extends React.Component {
             value={this.props.offerName}
             className={classes.textField}
             margin="normal"
+            disabled={this.props.hideInputs}
           />
     )
   }

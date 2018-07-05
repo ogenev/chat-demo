@@ -30,7 +30,7 @@ class ImageUploadButton extends React.Component {
           type="file"
         />
         <label htmlFor="contained-button-file">
-          <Button variant="contained" component="span" className={classes.button}>
+          <Button variant="contained" component="span" disabled={this.props.hideInputs} className={classes.button}>
             Прикачи снимка
           </Button>
         </label>
