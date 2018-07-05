@@ -1,5 +1,5 @@
 import React from 'react'
-import { database } from '../../Firebase'
+import { database } from '../../Firebase/index'
 import { withRouter } from 'react-router-dom'
 import ListItem from '@material-ui/core/ListItem'
 
@@ -20,7 +20,9 @@ class UserMetaChat extends React.Component {
     // Get meta from database onetime and set the current state
     this.metaRef.once('value')
       .then(snapshot => {
-        this.setState({offerCreator: snapshot.val().receivedByUserId})
+        if (snapshot.val()) {
+          this.setState({offerCreator: snapshot.val().receivedByUserId})
+        }
       })
       .catch(err => console.log(err))
   }

@@ -3,17 +3,34 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Input from '@material-ui/core/Input'
 import Button from '@material-ui/core/Button'
+import SendIcon from '@material-ui/icons/Send'
 
 const styles = theme => ({
   input: {
-    margin: theme.spacing.unit
+    margin: 7
   },
   button: {
-    margin: theme.spacing.unit
+    position: 'relative',
+    bottom: '1%'
   },
-  rightIcon: {
-    marginLeft: theme.spacing.unit
+  sendIcon: {
+    fontSize: 36
+  },
+  inputContainer: {
+    borderTop: '1px solid',
+    borderColor: '#e6e6e6',
+    position: 'fixed',
+    bottom: 0,
+    right: 0,
+    left: 0,
+    background: '#fafafa',
+    padding: '1%'
+  },
+  form: {
+    width: '100%',
+    display: 'inline-flex'
   }
+
 })
 
 class ChatInput extends React.Component {
@@ -47,21 +64,26 @@ class ChatInput extends React.Component {
     const isInvalid =
       chatInput === ''
     return (
-      <form className='chat-input' onSubmit={this.submitHandler}>
-        <Input
-          onChange={this.textChangeHandler}
-          value={chatInput}
-          placeholder='Напиши твоето съобщение...'
-          className={classes.input}
-          inputProps={{
-            'aria-label': 'Description'
-          }}
-        />
-        <Button variant='contained' color='primary' disabled={isInvalid}
-          type='submit' className={classes.button} size='small'>
-          Изпрати
-        </Button>
-      </form>
+      <div className={classes.inputContainer}>
+        <form onSubmit={this.submitHandler} className={classes.form}>
+          <Input
+            onChange={this.textChangeHandler}
+            value={chatInput}
+            disableUnderline
+            fullWidth
+            autoFocus
+            placeholder='Напиши съобщение...'
+            className={classes.input}
+            inputProps={{
+              'aria-label': 'Description'
+            }}
+          />
+          <Button variant='text' disabled={isInvalid} color={'primary'}
+            type='submit' className={classes.button} mini size='small'>
+            <SendIcon className={classes.sendIcon} />
+          </Button>
+        </form>
+      </div>
     )
   }
 }

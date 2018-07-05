@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import Button from '@material-ui/core/Button'
 import Link from 'react-router-dom/Link'
 import AppContext from '../AppContext'
 import ButtonMenu from './ButtonMenu'
+import ChatIcon from '@material-ui/icons/Chat'
+import IconButton from '@material-ui/core/IconButton'
 
 const LoginLink = props => <Link to='/login' {...props} />
 
@@ -22,9 +24,21 @@ class AppBarButton extends React.Component {
             )
           } else {
             return (
-              <div style={{position: 'absolute', top: 5, right: 10}}>
-                <ButtonMenu />
-              </div>
+              <Fragment>
+                <IconButton color='inherit'
+                  component={Link}
+                  to='/mychats'
+                  style={{
+                    position: 'absolute',
+                    right: 70,
+                    top: 7
+                  }}>
+                  <ChatIcon style={{ fontSize: 36}} />
+                </IconButton>
+                <div style={{position: 'absolute', top: 5, right: 10}}>
+                  <ButtonMenu />
+                </div>
+              </Fragment>
             )
           }
         }}
