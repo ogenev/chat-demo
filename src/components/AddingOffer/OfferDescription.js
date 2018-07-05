@@ -24,6 +24,7 @@ class OfferDescription extends React.Component {
         id="description"
         label="Описание"
         onChange={this.props.handleChange('description')}
+        disabled={this.props.hideInputs}
         placeholder= "опишете подробно"
         multiline
         className={classes.textField}

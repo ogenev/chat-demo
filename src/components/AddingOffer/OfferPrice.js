@@ -24,6 +24,7 @@ class OfferPrice extends React.Component {
         id="number"
         label="Редовна цена в лева"
         onChange={this.props.handleChange('price')}
+        disabled={this.props.hideInputs}
         value={this.props.price}
         type="number"
         className={classes.textField}
