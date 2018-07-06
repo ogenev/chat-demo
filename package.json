@@ -1,5 +1,5 @@
 {
-  "offerName": "chatdemo",
+  "name": "chatdemo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
