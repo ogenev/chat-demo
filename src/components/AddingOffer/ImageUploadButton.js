@@ -31,7 +31,7 @@ class ImageUploadButton extends React.Component {
         />
         <label htmlFor="contained-button-file">
           <Button variant="contained" component="span" disabled={this.props.hideInputs} className={classes.button}>
-            Прикачи снимка
+            Добави снимки
           </Button>
         </label>
       </div>

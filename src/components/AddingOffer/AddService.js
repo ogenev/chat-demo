@@ -81,7 +81,7 @@ class AddService extends React.Component {
   }
 
   setDiscount () {
-    if (this.state.price > this.state.promoPrice && this.state.promoPrice !== "") {
+    if (parseFloat(this.state.price) > parseFloat(this.state.promoPrice) && this.state.promoPrice !== "") {
       let currentDiscountPercent
       currentDiscountPercent = (this.state.price - this.state.promoPrice) / this.state.price * 100
       currentDiscountPercent = Math.round(parseFloat(currentDiscountPercent))
