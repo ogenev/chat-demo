@@ -8,19 +8,20 @@ import PromoPrice from './PromoPrice'
 import OfferDescription from './OfferDescription'
 import ImageUploadButton from './ImageUploadButton'
 import PublishOfferButton from './PublishOfferButton'
-let shortid = require('shortid');
+import shortid from 'shortid'
 
 const styles = ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
   },
-});
+})
 
 class AddService extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      hideInputs: false,
       showBtn: true,
       UserId: sessionStorage.getItem('userId'),
       offerName: "",
@@ -30,15 +31,16 @@ class AddService extends React.Component {
       discountPercent: 0,
       description: "",
       images: [],
-      url: [],
+      url: 'https://firebasestorage.googleapis.com/v0/b/chat-test-90ab1.appspot.com/o/noimage.png?alt=media&token=97bed2e7-3ac2-436b-a0c1-0224a14b3d60',
       offerId: shortid.generate(),
     }
   }
 
   createOffer = (event) => {
     event.preventDefault()
-    this.setState({showBtn: false})
-    this.setState({offerId: shortid.generate()})
+    this.setState({showBtn: false,
+    hideInputs: true,
+    offerId: shortid.generate()})
     this.setDiscount()
   }
 
@@ -60,6 +62,7 @@ class AddService extends React.Component {
   resetState = () => {
     this.setState({
       showBtn: true,
+      hideInputs: false,
       offerName: "",
       price: "",
       promoPrice: "",
@@ -67,7 +70,7 @@ class AddService extends React.Component {
       discountPercent: 0,
       description: "",
       images: [],
-      url: [],
+      url: 'https://firebasestorage.googleapis.com/v0/b/chat-test-90ab1.appspot.com/o/noimage.png?alt=media&token=97bed2e7-3ac2-436b-a0c1-0224a14b3d60',
       offerId: ""
     })
     this.setState({offerId: shortid.generate()})
@@ -78,12 +81,11 @@ class AddService extends React.Component {
   }
 
   setDiscount () {
-    if (this.state.promoPrice.length > 0 && this.state.price > this.state.promoPrice) {
-      this.setState({discount: true})
+    if (parseFloat(this.state.price) > parseFloat(this.state.promoPrice) && this.state.promoPrice !== "") {
       let currentDiscountPercent
       currentDiscountPercent = (this.state.price - this.state.promoPrice) / this.state.price * 100
       currentDiscountPercent = Math.round(parseFloat(currentDiscountPercent))
-      this.setState({discountPercent: currentDiscountPercent}, () => {this.handleUpload()})
+        this.setState({discountPercent: currentDiscountPercent, discount: true}, () => {this.handleUpload()})
     }
     else {
       this.setState({promoPrice: ""}, () => {this.handleUpload()})
@@ -101,12 +103,13 @@ class AddService extends React.Component {
       discount: this.state.discount,
       discountPercent: this.state.discountPercent,
       url: this.state.url
-    });
+    })
   }
 
   handleUpload = () => {
 
     if (this.state.images.length > 0) {
+      this.setState({url: []})
       const {images} = this.state
       //1. Upload images
       //2. Upload urls
@@ -139,7 +142,7 @@ class AddService extends React.Component {
       }
     }
     if (this.state.images.length === 0) {
-      this.setState({url: 'no images'}, () => {this.databaseUpload()})
+      this.databaseUpload()
       this.resetState()
     }
   }
@@ -150,20 +153,20 @@ class AddService extends React.Component {
     return (
       <div>
         <form className={classes.container} noValidate autoComplete="off" onSubmit={this.createOffer}>
-          <ServiceName handleChange={this.handleChange} offerName={this.state.offerName} />
-          <OfferPrice handleChange={this.handleChange} price={this.state.price}/>
-          <PromoPrice handleChange={this.handleChange} promoPrice={this.state.promoPrice}/>
-          <OfferDescription handleChange={this.handleChange} description={this.state.description} />
-          <ImageUploadButton fileChangedHandler={this.fileChangedHandler} />
+          <ServiceName handleChange={this.handleChange} offerName={this.state.offerName} hideInputs={this.state.hideInputs}/>
+          <OfferPrice handleChange={this.handleChange} price={this.state.price} hideInputs={this.state.hideInputs}/>
+          <PromoPrice handleChange={this.handleChange} promoPrice={this.state.promoPrice} hideInputs={this.state.hideInputs}/>
+          <OfferDescription handleChange={this.handleChange} description={this.state.description} hideInputs={this.state.hideInputs}/>
+          <ImageUploadButton fileChangedHandler={this.fileChangedHandler} hideInputs={this.state.hideInputs}/>
           <PublishOfferButton offerName={this.state.offerName} price={this.state.price} showBtn={this.state.showBtn} />
         </form>
       </div>
-    );
+    )
   }
 }
 
 AddService.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+  classes: PropTypes.object.isRequired
+}
 
 export default withStyles(styles)(AddService)

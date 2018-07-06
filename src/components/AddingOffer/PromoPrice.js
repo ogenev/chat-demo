@@ -10,7 +10,7 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
     width: 200,
   },
-});
+})
 
 class PromoPrice extends React.Component {
 
@@ -23,6 +23,7 @@ class PromoPrice extends React.Component {
         id="number"
         label="Промоционална цена"
         onChange={this.props.handleChange('promoPrice')}
+        disabled={this.props.hideInputs}
         value={this.props.promoPrice}
         type="number"
         className={classes.textField}

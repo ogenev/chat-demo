@@ -3,35 +3,33 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-
 const styles = theme => ({
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   input: {
-    display: 'none',
+    display: 'none'
   }
-});
+})
 
 class ImageUploadButton extends React.Component {
-
-  render() {
+  render () {
     const { classes } = this.props
 
     return (
       <div>
         <input
-          name="image"
-          accept="image/*"
+          name='image'
+          accept='image/*'
           onChange={this.props.fileChangedHandler}
           className={classes.input}
-          id="contained-button-file"
+          id='contained-button-file'
           multiple
-          type="file"
+          type='file'
         />
-        <label htmlFor="contained-button-file">
-          <Button variant="contained" component="span" className={classes.button}>
-            Прикачи снимка
+        <label htmlFor='contained-button-file'>
+          <Button variant='contained' component='span' disabled={this.props.hideInputs} className={classes.button}>
+            Добави снимки
           </Button>
         </label>
       </div>
@@ -40,7 +38,7 @@ class ImageUploadButton extends React.Component {
 }
 
 ImageUploadButton.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+  classes: PropTypes.object.isRequired
+}
 
 export default withStyles(styles)(ImageUploadButton)
