@@ -35,6 +35,8 @@ class AddService extends React.Component {
       url: 'https://firebasestorage.googleapis.com/v0/b/chat-test-90ab1.appspot.com/o/noimage.png?alt=media&token=97bed2e7-3ac2-436b-a0c1-0224a14b3d60',
       offerId: shortid.generate()
     }
+
+    this.resizeImages = this.resizeImages.bind(this)
   }
 
   createOffer = (event) => {
@@ -49,7 +51,7 @@ class AddService extends React.Component {
     this.setState({
       [attributeName]: event.target.value,
     });
-  };
+  }
 
   calcPrice = (price) => {
     if (price === "") {
@@ -58,7 +60,7 @@ class AddService extends React.Component {
     else {
       return parseFloat(parseFloat(price).toFixed(2)) * 100
     }
-  };
+  }
 
   resetState = () => {
     this.setState({
@@ -96,43 +98,55 @@ class AddService extends React.Component {
 
     if (this.state.images.length > 0){
       const { images } = this.state
+      const resizedImages = []
 
-      let image = images[0]
+      const image = images[0]
+      console.log(image)
+
+      //const handleUpload = this.handleUpload
+
+        const reader = new FileReader()
+        reader.onload = function (e) {
+          let offScreenImage = new Image()
+          offScreenImage.src = e.target.result
+
+          offScreenImage.onload = function () {
+
+            let resizedCanvas = document.createElement('canvas')
+
+            resizedCanvas.height = 500
+            resizedCanvas.width = 500
 
 
-      const reader = new FileReader()
-      reader.onload = function (e) {
-        const offScreenImage = new Image()
-        offScreenImage.src = e.target.result
-        console.log(e.target)
+            pica().resize(offScreenImage, resizedCanvas, {
+                unsharpAmount: 80,
+                unsharpRadius: 0.6,
+                unsharpThreshold: 2
+            })
+              .then(result => {
+                console.log('resize done')
 
-        offScreenImage.onload = function () {
-          console.log('Image is loaded', offScreenImage.height, offScreenImage.width, offScreenImage)
+                pica().toBlob(result, 'image/jpeg', 0.90).then(blob =>
+                  storage.ref(`resizeTest1`).put(blob)
+                )
 
-          const resized = document.createElement('canvas')
+                /*
 
-          resized.height = 500
-          resized.width = 500
+                if (result.toBlob) {
+                  result.toBlob(
+                    function (blob) {
+                      console.log('converted to blob')
+                      storage.ref(`resizeTest`).put(blob)
+                    }
+                  )
+                }
+                */
+              })
+              .catch(err => console.log(err))
+          }
 
-          // let resisedCanvas1 = <canvas height={500} width={500}/>
-          console.log(resized)
-          //console.log(image)
-          console.log(pica)
-
-          pica().resize(offScreenImage, resized)
-            .then(result => console.log(`resize done!  ${result}`))
-            .catch(err => console.log(err))
         }
-
-      }
-      reader.readAsDataURL(images[0])
-     // let originalCanvas = <canvas width={image.width} height={image.height}/>
-
-     // let ctx = originalCanvas.getContext("2d")
-     // ctx.drawImage(image, 0, 0)
-
-      // Create 500x500px canvas for copying the image
-
+        reader.readAsDataURL(image)
 
 
     } else {
@@ -154,15 +168,19 @@ class AddService extends React.Component {
     }).then(this.resetState())
   }
 
-  handleUpload = () => {
-
-    if (this.state.images.length > 0) {
+  handleUpload = (dataImage) => {
+    /*
+    ref.putString(message, 'base64').then(function(snapshot) {
+      console.log('Uploaded a base64 string!');
+    });
+    */
+    /*
       this.setState({url: []})
       const {images} = this.state
       //1. Upload images
       //2. Upload urls
       let imagePromise = (offerImage) => {
-        let uploadTask = storage.ref(`images/${offerImage.name}`).put(offerImage)
+        let uploadTask = storage.ref(`images/${offerImage.name}`).put(dataImage)
         return new Promise((resolve, reject) => {
           uploadTask.on('state_changed',
             (snapshot) => {
@@ -188,8 +206,7 @@ class AddService extends React.Component {
       for (let i = 0; i < images.length; i++) {
         imagePromise(images[i])
       }
-    }
-
+      */
   }
 
   render() {
