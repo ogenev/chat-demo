@@ -8,6 +8,7 @@
     "ajv": "^6.5.1",
     "firebase": "^5.0.4",
     "firebaseui": "^3.0.0",
+    "pica": "4.1.1",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",

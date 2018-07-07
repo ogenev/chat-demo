@@ -8,6 +8,7 @@ import PromoPrice from './PromoPrice'
 import OfferDescription from './OfferDescription'
 import ImageUploadButton from './ImageUploadButton'
 import PublishOfferButton from './PublishOfferButton'
+import pica from 'pica'
 import shortid from 'shortid'
 
 const styles = ({
@@ -32,7 +33,7 @@ class AddService extends React.Component {
       description: "",
       images: [],
       url: 'https://firebasestorage.googleapis.com/v0/b/chat-test-90ab1.appspot.com/o/noimage.png?alt=media&token=97bed2e7-3ac2-436b-a0c1-0224a14b3d60',
-      offerId: shortid.generate(),
+      offerId: shortid.generate()
     }
   }
 
@@ -71,9 +72,8 @@ class AddService extends React.Component {
       description: "",
       images: [],
       url: 'https://firebasestorage.googleapis.com/v0/b/chat-test-90ab1.appspot.com/o/noimage.png?alt=media&token=97bed2e7-3ac2-436b-a0c1-0224a14b3d60',
-      offerId: ""
+      offerId: shortid.generate()
     })
-    this.setState({offerId: shortid.generate()})
   }
 
   fileChangedHandler = (event) => {
@@ -85,10 +85,58 @@ class AddService extends React.Component {
       let currentDiscountPercent
       currentDiscountPercent = (this.state.price - this.state.promoPrice) / this.state.price * 100
       currentDiscountPercent = Math.round(parseFloat(currentDiscountPercent))
-        this.setState({discountPercent: currentDiscountPercent, discount: true}, () => {this.handleUpload()})
+        this.setState({discountPercent: currentDiscountPercent, discount: true}, () => {this.resizeImages()})
     }
     else {
-      this.setState({promoPrice: ""}, () => {this.handleUpload()})
+      this.setState({promoPrice: ""}, () => {this.resizeImages()})
+    }
+  }
+
+  resizeImages () {
+
+    if (this.state.images.length > 0){
+      const { images } = this.state
+
+      let image = images[0]
+
+
+      const reader = new FileReader()
+      reader.onload = function (e) {
+        const offScreenImage = new Image()
+        offScreenImage.src = e.target.result
+        console.log(e.target)
+
+        offScreenImage.onload = function () {
+          console.log('Image is loaded', offScreenImage.height, offScreenImage.width, offScreenImage)
+
+          const resized = document.createElement('canvas')
+
+          resized.height = 500
+          resized.width = 500
+
+          // let resisedCanvas1 = <canvas height={500} width={500}/>
+          console.log(resized)
+          //console.log(image)
+          console.log(pica)
+
+          pica().resize(offScreenImage, resized)
+            .then(result => console.log(`resize done!  ${result}`))
+            .catch(err => console.log(err))
+        }
+
+      }
+      reader.readAsDataURL(images[0])
+     // let originalCanvas = <canvas width={image.width} height={image.height}/>
+
+     // let ctx = originalCanvas.getContext("2d")
+     // ctx.drawImage(image, 0, 0)
+
+      // Create 500x500px canvas for copying the image
+
+
+
+    } else {
+      this.databaseUpload()
     }
   }
 
@@ -103,7 +151,7 @@ class AddService extends React.Component {
       discount: this.state.discount,
       discountPercent: this.state.discountPercent,
       url: this.state.url
-    })
+    }).then(this.resetState())
   }
 
   handleUpload = () => {
@@ -141,10 +189,7 @@ class AddService extends React.Component {
         imagePromise(images[i])
       }
     }
-    if (this.state.images.length === 0) {
-      this.databaseUpload()
-      this.resetState()
-    }
+
   }
 
   render() {
