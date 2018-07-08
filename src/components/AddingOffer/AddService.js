@@ -42,9 +42,7 @@ class AddService extends React.Component {
   createOffer = (event) => {
     event.preventDefault()
     this.setState({showBtn: false,
-    hideInputs: true,
-    offerId: shortid.generate()})
-    this.setDiscount()
+    hideInputs: true }, () => this.setDiscount())
   }
 
   handleChange = attributeName => event => {
@@ -98,26 +96,48 @@ class AddService extends React.Component {
 
     if (this.state.images.length > 0){
       const { images } = this.state
-      const resizedImages = []
-
+     // const resizedImages = []
       const image = images[0]
-      console.log(image)
-
       //const handleUpload = this.handleUpload
 
+      // Loading file reader and read the files from the state
         const reader = new FileReader()
         reader.onload = function (e) {
+
+        // Creating offscreen image and copy the image from the state
           let offScreenImage = new Image()
           offScreenImage.src = e.target.result
 
           offScreenImage.onload = function () {
 
+            // Getting uploaded image dimensions
+            let originalWidth = offScreenImage.width
+            let originalHeight = offScreenImage.height
+
+            // Algorithm for the new size (500x500px) but keeping the aspect ratio
+            let newWidth, newHeight = 0
+            let width = 500
+            let height = 500
+
+            let ratioWidth = originalWidth / width
+            let ratioHeight = originalHeight / height
+
+            if (ratioWidth > ratioHeight){
+              newHeight = Math.round(originalHeight / ratioWidth)
+              newWidth = width
+            } else {
+              newWidth = Math.round(originalWidth / ratioHeight)
+              newHeight = height
+
+            }
+
+            // Creating new canvas element with the new dimensions
             let resizedCanvas = document.createElement('canvas')
 
-            resizedCanvas.height = 500
-            resizedCanvas.width = 500
+            resizedCanvas.height = newHeight
+            resizedCanvas.width = newWidth
 
-
+            // Resizing the image to the new canvas with Pica
             pica().resize(offScreenImage, resizedCanvas, {
                 unsharpAmount: 80,
                 unsharpRadius: 0.6,
@@ -126,28 +146,15 @@ class AddService extends React.Component {
               .then(result => {
                 console.log('resize done')
 
+            // Converting the resizedCanvas to Blob and upload it to Firebase Storage
                 pica().toBlob(result, 'image/jpeg', 0.90).then(blob =>
-                  storage.ref(`resizeTest1`).put(blob)
+                  storage.ref(`resizeTest70`).put(blob)
                 )
-
-                /*
-
-                if (result.toBlob) {
-                  result.toBlob(
-                    function (blob) {
-                      console.log('converted to blob')
-                      storage.ref(`resizeTest`).put(blob)
-                    }
-                  )
-                }
-                */
               })
               .catch(err => console.log(err))
           }
-
         }
         reader.readAsDataURL(image)
-
 
     } else {
       this.databaseUpload()
