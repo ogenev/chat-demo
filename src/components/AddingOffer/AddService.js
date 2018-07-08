@@ -98,7 +98,7 @@ class AddService extends React.Component {
       const { images } = this.state
      // const resizedImages = []
       const image = images[0]
-      //const handleUpload = this.handleUpload
+      const handleUpload = this.handleUpload
 
       // Loading file reader and read the files from the state
         const reader = new FileReader()
@@ -146,9 +146,10 @@ class AddService extends React.Component {
               .then(result => {
                 console.log('resize done')
 
-            // Converting the resizedCanvas to Blob and upload it to Firebase Storage
+            // Converting the resizedCanvas to Blob and send it to the upload method
                 pica().toBlob(result, 'image/jpeg', 0.90).then(blob =>
-                  storage.ref(`resizeTest70`).put(blob)
+                  //storage.ref(`resizeTest70`).put(blob)
+                  handleUpload(blob)
                 )
               })
               .catch(err => console.log(err))
@@ -175,45 +176,45 @@ class AddService extends React.Component {
     }).then(this.resetState())
   }
 
-  handleUpload = (dataImage) => {
+  handleUpload = (blob) => {
+    console.log(blob)
+
+      this.setState({url: []}, () => {
+
+        let imagePromise = (blob) => {
+      let uploadTask = storage.ref(`images/12zaza`).put(blob)
+      return new Promise((resolve, reject) => {
+        uploadTask.on('state_changed',
+          (snapshot) => {
+
+          },
+          (err) => {
+            reject(err);
+          },
+          () => {
+            storage.ref('images').child('12zaza')
+            uploadTask.snapshot.ref.getDownloadURL()
+              .then(newUrl => {
+                this.setState({url: [...this.state.url, newUrl]},
+                  () => this.databaseUpload())
+               // if (this.state.url.length === images.length) {//  this.databaseUpload()
+               // }
+              })
+          }
+        )
+      })
+    }
     /*
-    ref.putString(message, 'base64').then(function(snapshot) {
-      console.log('Uploaded a base64 string!');
-    });
-    */
-    /*
-      this.setState({url: []})
-      const {images} = this.state
+    for (let i = 0; i < images.length; i++) {
+      imagePromise(images[i])
+    }
+      */
+    imagePromise(blob)
+      })
       //1. Upload images
       //2. Upload urls
-      let imagePromise = (offerImage) => {
-        let uploadTask = storage.ref(`images/${offerImage.name}`).put(dataImage)
-        return new Promise((resolve, reject) => {
-          uploadTask.on('state_changed',
-            (snapshot) => {
 
-            },
-            (err) => {
-              reject(err);
-            },
-            () => {
-              storage.ref('images').child(offerImage.name)
-              uploadTask.snapshot.ref.getDownloadURL()
-                .then(newUrl => {
-                  this.setState({url: [...this.state.url, newUrl]})
-                  if (this.state.url.length === images.length) {
-                    this.databaseUpload()
-                    this.resetState()
-                  }
-                })
-            }
-          )
-        })
-      }
-      for (let i = 0; i < images.length; i++) {
-        imagePromise(images[i])
-      }
-      */
+
   }
 
   render() {
