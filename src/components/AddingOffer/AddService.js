@@ -96,15 +96,16 @@ class AddService extends React.Component {
 
     if (this.state.images.length > 0){
       const { images } = this.state
-     // const resizedImages = []
-      const image = images[0]
       const handleUpload = this.handleUpload
+      const blobs = []
 
-      // Loading file reader and read the files from the state
+      for (let image of images) {
+
+        // Loading file reader and read the files from the state
         const reader = new FileReader()
         reader.onload = function (e) {
 
-        // Creating offscreen image and copy the image from the state
+          // Creating offscreen image and copy the image from the state
           let offScreenImage = new Image()
           offScreenImage.src = e.target.result
 
@@ -122,7 +123,7 @@ class AddService extends React.Component {
             let ratioWidth = originalWidth / width
             let ratioHeight = originalHeight / height
 
-            if (ratioWidth > ratioHeight){
+            if (ratioWidth > ratioHeight) {
               newHeight = Math.round(originalHeight / ratioWidth)
               newWidth = width
             } else {
@@ -138,24 +139,28 @@ class AddService extends React.Component {
             resizedCanvas.width = newWidth
 
             // Resizing the image to the new canvas with Pica
+
             pica().resize(offScreenImage, resizedCanvas, {
-                unsharpAmount: 80,
-                unsharpRadius: 0.6,
-                unsharpThreshold: 2
+              unsharpAmount: 80,
+              unsharpRadius: 0.6,
+              unsharpThreshold: 2
             })
               .then(result => {
-                console.log('resize done')
 
-            // Converting the resizedCanvas to Blob and send it to the upload method
-                pica().toBlob(result, 'image/jpeg', 0.90).then(blob =>
-                  //storage.ref(`resizeTest70`).put(blob)
-                  handleUpload(blob)
+                // Converting the resizedCanvas to Blob and send it to the upload method
+                pica().toBlob(result, 'image/jpeg', 0.90).then((blob) => {
+                    blobs.push(blob)
+                    if (blobs.length === images.length) {
+                      handleUpload(blobs)
+                    }
+                  }
                 )
               })
               .catch(err => console.log(err))
           }
         }
         reader.readAsDataURL(image)
+      }
 
     } else {
       this.databaseUpload()
@@ -176,45 +181,48 @@ class AddService extends React.Component {
     }).then(this.resetState())
   }
 
-  handleUpload = (blob) => {
-    console.log(blob)
+  handleUpload = (blobs) => {
 
+    // Uploading blobs(images) to Firebase Storage
       this.setState({url: []}, () => {
 
         let imagePromise = (blob) => {
-      let uploadTask = storage.ref(`images/12zaza`).put(blob)
+          // Generate random id for the image
+          let imageId = shortid.generate()
+         let uploadTask = storage.ref(`images/${imageId}`).put(blob)
       return new Promise((resolve, reject) => {
         uploadTask.on('state_changed',
           (snapshot) => {
 
           },
           (err) => {
-            reject(err);
+            reject(err)
           },
           () => {
-            storage.ref('images').child('12zaza')
+
+          // Get the image link from Firebase Storage and add to state
+            storage.ref('images').child(imageId)
             uploadTask.snapshot.ref.getDownloadURL()
               .then(newUrl => {
                 this.setState({url: [...this.state.url, newUrl]},
-                  () => this.databaseUpload())
-               // if (this.state.url.length === images.length) {//  this.databaseUpload()
-               // }
+                  () => {
+
+                  // When all blobs are uploaded, go to database upload
+                  if (this.state.url.length === blobs.length) {
+                    this.databaseUpload()
+                  }
+                })
               })
           }
         )
       })
     }
-    /*
-    for (let i = 0; i < images.length; i++) {
-      imagePromise(images[i])
+
+    for (let i = 0; i < blobs.length; i++) {
+      imagePromise(blobs[i])
     }
-      */
-    imagePromise(blob)
+
       })
-      //1. Upload images
-      //2. Upload urls
-
-
   }
 
   render() {
