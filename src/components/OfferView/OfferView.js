@@ -2,10 +2,27 @@ import React from 'react';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import {database} from '../../Firebase/index'
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography'
 import Moment from 'react-moment';
 import 'moment/locale/bg';
+import { Schedule, AttachMoney, Redeem, Announcement } from '@material-ui/icons'
 
+
+
+
+
+const styles = theme => ({
+  icon: {
+    margin: theme.spacing.unit,
+    fontSize: 20,
+    float: 'left',
+    marginTop: '1%',
+    marginLeft: '0%',
+    marginRight: '3%',
+  },
+});
 
 class OfferView extends React.Component {
   constructor(props) {
@@ -14,9 +31,6 @@ class OfferView extends React.Component {
       offer: null
     }
   }
-
-
-
 
 
   componentDidMount() {
@@ -33,6 +47,7 @@ class OfferView extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     let currentOffer = this.state.offer
     if (this.state.offer === null) {
       return null
@@ -64,11 +79,38 @@ class OfferView extends React.Component {
           </div>
           <div style={{padding: '1em'}}>
             <Typography style={{color: 'EEE'}} variant="title">{currentOffer.offerName}</Typography>
-            <Typography style={{color: 'EEE'}} variant="subheading"><Moment locale="bg" fromNow>{currentOffer.timeStamp}</Moment> от <span style={{color: 'blue'}}>Пешо</span></Typography>
-            <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', float: 'left'}} variant="title">{currentOffer.promoPrice/100} лв.</Typography>
-            <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} variant="subheading">(намалено от {currentOffer.price/100} лв.)</Typography>
-            <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', position: 'left'}} variant="title">Oтсъпка: -{currentOffer.discountPercent}%</Typography>
-            <Typography style={{color: 'EEE'}} variant="subheading">{currentOffer.description}</Typography>
+            <div style={{marginTop: '1em'}}>
+            <Schedule className={classes.icon}/>
+            <Typography style={{color: 'EEE'}} variant="subheading">
+              <Moment locale="bg" fromNow>{currentOffer.timeStamp}
+              </Moment> от
+              <span style={{color: 'blue'}}> Пешо
+              </span>
+            </Typography>
+            </div>
+            <div style={{marginTop: '1em'}}>
+              <AttachMoney className={classes.icon}/>
+            <Typography style={{color: 'EEE',
+             }} variant="title">{currentOffer.promoPrice/100} лв.
+              <span style={{color: 'EEE', fontSize: '80%'
+                }}> (редовна цена {currentOffer.price/100} лв.)
+              </span>
+            </Typography>
+            </div>
+            <div style={{marginTop: '1em'}}>
+            <Redeem className={classes.icon}/>
+            <Typography style={{color: 'EEE',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              position: 'left'}} variant="title">Oтсъпка: -{currentOffer.discountPercent}%
+            </Typography>
+            </div>
+            <div style={{marginTop: '1em'}}>
+              <Announcement className={classes.icon}/>
+            <Typography style={{color: 'EEE'}} variant="subheading">{currentOffer.description}
+            </Typography>
+            </div>
           </div>
           <button style={{position: 'absolute',
             top: '50%',
@@ -90,4 +132,8 @@ class OfferView extends React.Component {
   }
 }
 
-export default OfferView
+OfferView.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(OfferView);

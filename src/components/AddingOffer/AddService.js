@@ -10,7 +10,6 @@ import ImageUploadButton from './ImageUploadButton'
 import PublishOfferButton from './PublishOfferButton'
 import pica from 'pica'
 import shortid from 'shortid'
-import Moment from 'react-moment'
 
 const styles = ({
   container: {

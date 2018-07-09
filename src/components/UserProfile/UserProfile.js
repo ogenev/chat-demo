@@ -15,30 +15,41 @@ const styles = ({
 
 class UserProfile extends React.Component {
   state = {
-    UserId: "",
-    address: "",
-    website: "",
-    phone: "",
-    presentation: ""
+    UserId: null,
+    address: null,
+    website: null,
+    phone: null,
+    presentation: null
   }
 
-  componentWillMount () {
+  componentDidMount () {
     let currentUserId = sessionStorage.getItem('userId')
     this.setState({
-      UserId: currentUserId
+      UserId: currentUserId,
     })
 
     database.ref(`users/${currentUserId}/`).once('value')
+    // If database.ref returns undefined, set state to ""
       .then(snapshot => {
-        let address = snapshot.val().address
-        let website = snapshot.val().website
-        let phone = snapshot.val().phone
-        let presentation = snapshot.val().presentation
+        let userDataFirebase = [snapshot.val().address,
+          snapshot.val().website,
+          snapshot.val().phone,
+          snapshot.val().presentation
+        ]
+        let userDataReady =[]
+        userDataReady = userDataFirebase.map((data, i) => {
+          if (data !== undefined) {
+            return userDataReady[i] = data
+          }
+          else {
+            return userDataReady[i] = ""
+          }
+        })
 
-      this.setState({address: address,
-      website: website,
-      phone: phone,
-      presentation: presentation })
+      this.setState({address: userDataReady[0],
+      website: userDataReady[1],
+      phone: userDataReady[2],
+      presentation: userDataReady[3] })
       })
   }
 
