@@ -1,13 +1,13 @@
 import React from 'react';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
-import {database} from '../../Firebase/index'
+import {database} from '../../Firebase'
 
 
 class OfferView extends React.Component {
   state = {
     offer: null
-  };
+  }
 
 
   componentDidMount() {
@@ -40,7 +40,7 @@ class OfferView extends React.Component {
                 {this.state.offer.url.map((e, i)=> (
                   <Slide index={i} key={i}>
                   <img
-                    src={e}/>
+                    src={e} alt={'оферта'}/>
                 </Slide>))}
               </Slider>
               <ButtonBack style={{float: 'left'}}>Back</ButtonBack>

@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import { auth, database } from '../Firebase'
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator'
 
 
 const INITIAL_STATE = {
-  displayName: '',
+  username: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
@@ -46,16 +46,31 @@ class RegisterForm extends React.Component {
     this.state = { ...INITIAL_STATE }
   }
 
+  componentDidMount() {
+    // custom rule for password match
+    ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+      return (value === this.state.passwordOne)
+    })
+    // custom rule for password
+    ValidatorForm.addValidationRule('isPassword', (value) => {
+      return (value.length > 5)
+    })
+    // custom rule for username length
+    ValidatorForm.addValidationRule('isUsernameLength', (value) => {
+      return (value.length > 3)
+    })
+  }
+
   onSubmit = (event) => {
     const {
-      displayName,
+      username,
       email,
       passwordOne,
-    } = this.state;
+    } = this.state
 
     const {
       history,
-    } = this.props;
+    } = this.props
 
     const that = this
 
@@ -68,15 +83,15 @@ class RegisterForm extends React.Component {
 
         database.ref('users/' + authUser.user.uid).set({
           userId: authUser.user.uid,
-          displayName: displayName,
+          username: username,
           email: email,
         })
           .then(() => {
             that.setState(() => ({ ...INITIAL_STATE }))
-            // Set user displayName in Firebase:
+            // Set user username in Firebase:
 
             authUser.user.updateProfile({
-              displayName: displayName,
+              username: username,
             }).then(function() {
               // Update successful.
             }).catch(function(error) {
@@ -100,79 +115,86 @@ class RegisterForm extends React.Component {
     const { classes } = this.props
 
     const {
-      displayName,
+      username,
       email,
       passwordOne,
       passwordTwo,
       error,
     } = this.state
 
-    const isInvalid =
-      passwordOne !== passwordTwo ||
-      passwordOne === '' ||
-      email === '' ||
-      displayName === ''
-
-
     return (
       <Fragment>
-      <form className={classes.container} noValidate autoComplete="off" onSubmit={this.onSubmit}>
+      <ValidatorForm className={classes.container} noValidate autoComplete="off" onSubmit={this.onSubmit}>
         <Grid container direction='column' alignItems='center'>
-          <TextField
-            id="displayName"
-            value={displayName}
-            label="Име"
+          <TextValidator
+            id="username"
+            name='username'
+            value={username}
+            label="Потребителско име"
             className={classes.textField}
-            onChange={event => this.setState(byPropKey('displayName', event.target.value))}
+            onChange={event => this.setState(byPropKey('username', event.target.value))}
+            validators={['required', 'isUsernameLength']}
+            errorMessages={['Въведете потребителско име!', 'Потребителското име трябва да е поне 4 символа']}
             margin="normal"
           />
-        <TextField
+        <TextValidator
           id="email"
+          name='email'
           value={email}
           label="Имейл адрес"
           className={classes.textField}
           onChange={event => this.setState(byPropKey('email', event.target.value))}
           margin="normal"
+          validators={['required', 'isEmail']}
+          errorMessages={['Попълнете имейл адрес!', 'Невалиден имейл адрес!']}
         />
-        <TextField
+        <TextValidator
           id="password-input"
           value={passwordOne}
+          name='password'
           label="Парола"
           className={classes.textField}
           onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
           type="password"
           autoComplete="current-password"
+          validators={['isPassword', 'required']}
+          errorMessages={['Паролата трябва да е минимум 6 символа', 'Въведете парола!']}
           margin="normal"
         />
-        <TextField
+        <TextValidator
           id="confirmPassword-input"
           label="Потвърдете Паролата"
+          name='passwordTwo'
           value={passwordTwo}
           className={classes.textField}
           onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
           type="password"
           autoComplete="current-password"
+          validators={['isPasswordMatch', 'required']}
+          errorMessages={['Паролите не съвпадат!', 'Повторете паролата!']}
           margin="normal"
         />
           <Button variant="contained" color="secondary"
                   className={classes.button} type='submit'
-                  disabled={isInvalid}>
+                  >
             Регистрирай се
           </Button>
-          { error && <p>{error.message}</p> }
+          { error &&
+            <p>{error.message}</p>
+          }
         </Grid>
-      </form>
+      </ValidatorForm>
         <Grid container direction='column' alignItems='center'>
 
         </Grid>
       </Fragment>
-    );
+    )
   }
 }
 
 RegisterForm.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
 
 export default withStyles(styles)(RegisterForm)

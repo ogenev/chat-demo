@@ -4,12 +4,11 @@ import { withStyles } from '@material-ui/core/styles/index'
 import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
-import firebase from 'firebase/app'
 import { auth } from '../Firebase'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
+/*
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
   signInFlow: 'popup',
@@ -20,7 +19,7 @@ const uiConfig = {
     firebase.auth.FacebookAuthProvider.PROVIDER_ID,
     firebase.auth.GoogleAuthProvider.PROVIDER_ID
   ]
-}
+}*/
 
 const styles = theme => ({
   container: {
@@ -68,35 +67,35 @@ class LoginForm extends React.Component {
     const {
       email,
       password,
-    } = this.state;
+    } = this.state
 
     const {
       history,
-    } = this.props;
+    } = this.props
 
     auth.signInWithEmailAndPassword(email, password)
       .then(() => {
-        this.setState(() => ({ ...INITIAL_STATE }));
+        this.setState(() => ({ ...INITIAL_STATE }))
         history.push('/home')
       })
       .catch(error => {
-        this.setState(byPropKey('error', error));
-      });
+        this.setState(byPropKey('error', error))
+      })
     event.preventDefault()
 
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
     const {
       email,
       password,
       error,
-    } = this.state;
+    } = this.state
 
     const isInvalid =
       password === '' ||
-      email === '';
+      email === ''
 
     return (
       <Fragment>
@@ -134,22 +133,20 @@ class LoginForm extends React.Component {
           </Grid>
         </form>
         <Grid container direction='column' alignItems='center'>
-            <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
-          <div style={{height: 20}}>
-          </div>
+
           <Button variant='contained' color='secondary' component={Link} to='/register' >
             Регистрирай се
           </Button>
           { error && <p>{error.message}</p> }
         </Grid>
       </Fragment>
-    );
+    )
   }
 }
 
 LoginForm.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
 
-export default withStyles(styles)(LoginForm);
+export default withStyles(styles)(LoginForm)
