@@ -71,7 +71,6 @@ const styles = theme => ({
 });
 
 
-
 class Cards extends React.Component {
   state = {
     expanded: false,
