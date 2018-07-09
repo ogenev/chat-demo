@@ -11,6 +11,7 @@
     "firebaseui": "^3.0.0",
     "pica": "4.1.1",
     "prop-types": "^15.6.1",
+    "pure-react-carousel": "^1.13.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-firebaseui": "^3.0.4",

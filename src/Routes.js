@@ -10,6 +10,7 @@ import TestOffer from './components/Chat/TestOffer'
 import AllUserChats from './components/Chat/AllUserChats'
 import AppContext from './components/AppContext'
 import UserProfile from './components/UserProfile/UserProfile'
+import OfferView from './components/OfferView/OfferView'
 
 class Routes extends React.Component {
   render () {
@@ -27,6 +28,7 @@ class Routes extends React.Component {
           component={LoginForm}
         />
         <Route exact path='/home' component={Home} />
+        <Route path='/offer/:id/:offerName' component={OfferView} />
         <Route
           exact path='/addoffer'
           component={AddingOffer}

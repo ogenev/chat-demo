@@ -1,23 +1,17 @@
 import React from 'react'
+import Cards from './Cards/Cards'
 
 class Home extends React.Component {
 
-  goToAddOffer = event => {
-
-    event.preventDefault()
-    this.props.history.push(`/addoffer`)
-  }
 
   render() {
     return (
       <div>
-        <h1>
-          Home
-        </h1>
-        <button onClick={ this.goToAddOffer }>Add Offer</button>
+        <Cards />
       </div>
     )
   }
 }
 
 export default Home
+
