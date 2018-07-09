@@ -91,31 +91,33 @@ class Cards extends React.Component {
 
     return (
       <div style={{paddingTop: '0.3em', overflow: 'scroll', height: '92vh'}} >
-        {this.state.cards.map(e => (
-          <Card style={card} className={classes.card} key={e.offerId} component={Link} to={`/offer/${e.offerId}/${e.offerName}`} >
+        {this.state.cards.map(offer => (
+          <Link key={offer.offerId} to={{pathname: `/offer/${offer.offerId}/${offer.offerName}`, state: { offer: offer }} }>
+          <Card style={card} className={classes.card} key={offer.offerId}>
             <Typography style={{color: 'EEE', width: '95%', marginLeft: 'auto', marginTop: 'auto'}} variant="body1" >Пешо</Typography>
             <CardMedia style={cardMedia}
                        className={classes.media}
-                       image={e.url[0]}
+                       image={offer.url[0]}
             />
             <div style={textArea}>
-              {e.price !== e.promoPrice
-                ? <div> <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} variant="title">{e.offerName}</Typography>
-                  <Typography style={{color: 'green', textAlign: 'right', float: 'right', fontWeight: 'bold'}} variant="title">{e.promoPrice/100} лв.</Typography>
+              {offer.price !== offer.promoPrice
+                ? <div> <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} variant="title">{offer.offerName}</Typography>
+                  <Typography style={{color: 'green', textAlign: 'right', float: 'right', fontWeight: 'bold'}} variant="title">{offer.promoPrice/100} лв.</Typography>
                   <Typography style={{textAlign: 'right', float: 'right',
-                    backgroundImage: `url(${Image})`}} variant="subheading">{e.price/100} лв.</Typography>
-                  <Typography style={{color: 'red', marginBottom: 'auto'}} variant="title">-{e.discountPercent}%</Typography>
-                  <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} variant="subheading">{e.description}</Typography>
+                    backgroundImage: `url(${Image})`}} variant="subheading">{offer.price/100} лв.</Typography>
+                  <Typography style={{color: 'red', marginBottom: 'auto'}} variant="title">-{offer.discountPercent}%</Typography>
+                  <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} variant="subheading">{offer.description}</Typography>
                 </div>
-                : <div> <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} variant="title">{e.offerName}</Typography>
-                  <Typography style={{color: 'green', textAlign: 'right', float: 'right', fontWeight: 'bold'}} variant="title">{e.promoPrice/100} ??.</Typography>
+                : <div> <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} variant="title">{offer.offerName}</Typography>
+                  <Typography style={{color: 'green', textAlign: 'right', float: 'right', fontWeight: 'bold'}} variant="title">{offer.promoPrice/100} ??.</Typography>
                   <Typography style={{textAlign: 'right', float: 'right'}} variant="subheading"> </Typography>
                   <Typography style={{color: 'red', marginBottom: 'auto', display: 'none'}} variant="title">YES </Typography>
-                  <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minHeight: '1.5em'}} variant="subheading">{e.description}</Typography>
+                  <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minHeight: '1.5em'}} variant="subheading">{offer.description}</Typography>
                 </div>
               }
             </div>
           </Card>
+          </Link>
         ))}
 
       </div>

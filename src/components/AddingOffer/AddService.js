@@ -10,6 +10,7 @@ import ImageUploadButton from './ImageUploadButton'
 import PublishOfferButton from './PublishOfferButton'
 import pica from 'pica'
 import shortid from 'shortid'
+import Moment from 'react-moment'
 
 const styles = ({
   container: {
@@ -23,6 +24,7 @@ class AddService extends React.Component {
     super(props)
     this.state = {
       hideInputs: false,
+      timeStamp: null,
       showBtn: true,
       UserId: sessionStorage.getItem('userId'),
       offerName: "",
@@ -42,7 +44,7 @@ class AddService extends React.Component {
   createOffer = (event) => {
     event.preventDefault()
     this.setState({showBtn: false,
-    hideInputs: true }, () => this.setDiscount())
+    hideInputs: true, timeStamp: new Date().getTime() }, () => this.setDiscount())
   }
 
   handleChange = attributeName => event => {
@@ -72,7 +74,8 @@ class AddService extends React.Component {
       description: "",
       images: [],
       url: 'https://firebasestorage.googleapis.com/v0/b/chat-test-90ab1.appspot.com/o/noimage.png?alt=media&token=97bed2e7-3ac2-436b-a0c1-0224a14b3d60',
-      offerId: shortid.generate()
+      offerId: shortid.generate(),
+      timeStamp: null
     })
   }
 
@@ -177,7 +180,8 @@ class AddService extends React.Component {
       promoPrice: this.calcPrice(this.state.promoPrice),
       discount: this.state.discount,
       discountPercent: this.state.discountPercent,
-      url: this.state.url
+      url: this.state.url,
+      timeStamp: this.state.timeStamp
     }).then(this.resetState())
   }
 
