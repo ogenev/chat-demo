@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   passwordOne: '',
   passwordTwo: '',
   error: null,
+  isMounted: false,
 }
 
 
@@ -47,18 +48,26 @@ class RegisterForm extends React.Component {
   }
 
   componentDidMount() {
-    // custom rule for password match
-    ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-      return (value === this.state.passwordOne)
-    })
-    // custom rule for password
-    ValidatorForm.addValidationRule('isPassword', (value) => {
-      return (value.length > 5)
-    })
-    // custom rule for username length
-    ValidatorForm.addValidationRule('isUsernameLength', (value) => {
-      return (value.length > 3)
-    })
+          // custom rule for password match
+          ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+            return (value === this.state.passwordOne)
+          })
+          // custom rule for password
+          ValidatorForm.addValidationRule('isPassword', (value) => {
+            return (value.length > 5)
+          })
+          // custom rule for username length
+          ValidatorForm.addValidationRule('isUsernameLengthMin', (value) => {
+            return (value.length > 2)
+          })
+          ValidatorForm.addValidationRule('isUsernameLengthMax', (value) => {
+            return (value.length < 16)
+          })
+          ValidatorForm.addValidationRule('isUsername', (value) => {
+            const regex = /^[a-z0-9_-]{3,15}$/
+            return (regex.test(value))
+          })
+
   }
 
   onSubmit = (event) => {
@@ -87,27 +96,29 @@ class RegisterForm extends React.Component {
           email: email,
         })
           .then(() => {
-            that.setState(() => ({ ...INITIAL_STATE }))
-            // Set user username in Firebase:
+            that.setState(() => ({ ...INITIAL_STATE }), () => {
+              // Add user to users database:
+              database.ref('usernames/').set({
+                [username]: authUser.user.uid
+              })
 
-            authUser.user.updateProfile({
-              username: username,
-            }).then(function() {
-              // Update successful.
-            }).catch(function(error) {
-              console.log(error)
+              // Set user username in Firebase:
+              authUser.user.updateProfile({
+                username: username,
+              }).then(function() {
+                // Update successful.
+              }).catch(function(error) {
+                console.log(error)
+              })
+              history.push('/home')
             })
-
-            history.push('/home')
           })
           .catch(error => {
             that.setState(byPropKey('error', error))
-          });
-
+          })
       }).catch(error => {
       that.setState(byPropKey('error', error))
     })
-
     event.preventDefault()
   }
 
@@ -133,8 +144,9 @@ class RegisterForm extends React.Component {
             label="Потребителско име"
             className={classes.textField}
             onChange={event => this.setState(byPropKey('username', event.target.value))}
-            validators={['required', 'isUsernameLength']}
-            errorMessages={['Въведете потребителско име!', 'Потребителското име трябва да е поне 4 символа']}
+            validators={['required', 'isUsernameLengthMin', 'isUsernameLengthMax', 'isUsername']}
+            errorMessages={['Въведете потребителско име!', 'Потребителското име трябва да е поне 3 символа',
+              'Потребителското име не трябва да е повече от 15 символа', 'Позволени са само малки латински букви, цифри, тире, долна черта!']}
             margin="normal"
           />
         <TextValidator
