@@ -13,7 +13,6 @@ const INITIAL_STATE = {
   passwordOne: '',
   passwordTwo: '',
   error: null,
-  isMounted: false,
 }
 
 
@@ -47,6 +46,11 @@ class RegisterForm extends React.Component {
     this.state = { ...INITIAL_STATE }
   }
 
+  componentWillUnmount(){
+    this.setState({ ...INITIAL_STATE })
+    database.ref(`usernames/`).off()
+  }
+
   componentDidMount() {
           // custom rule for password match
           ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
@@ -63,9 +67,20 @@ class RegisterForm extends React.Component {
           ValidatorForm.addValidationRule('isUsernameLengthMax', (value) => {
             return (value.length < 16)
           })
+           // Regex for username symbols
           ValidatorForm.addValidationRule('isUsername', (value) => {
             const regex = /^[a-z0-9_-]{3,15}$/
             return (regex.test(value))
+          })
+          // Validation for dublicate username
+          ValidatorForm.addValidationRule('isUsernameUsed', (value) => {
+            let isUsed = null
+            if (value.length > 2 && value.length < 16) {
+              database.ref(`usernames/`).on('value', snapshot => {
+                isUsed = snapshot.hasChild(value)
+              })
+            }
+            return !isUsed
           })
 
   }
@@ -83,42 +98,37 @@ class RegisterForm extends React.Component {
 
     const that = this
 
-// Register user to Firebase
-
-    auth.createUserWithEmailAndPassword(email, passwordOne)
-      .then(function(authUser){
-
-        // Add user to database too
-
-        database.ref('users/' + authUser.user.uid).set({
-          userId: authUser.user.uid,
-          username: username,
-          email: email,
-        })
-          .then(() => {
-            that.setState(() => ({ ...INITIAL_STATE }), () => {
+      // Register user to Firebase
+      auth.createUserWithEmailAndPassword(email, passwordOne)
+        .then(authUser => {
+          // Add user to database too
+          database.ref('users/' + authUser.user.uid).set({
+            userId: authUser.user.uid,
+            username: username,
+            email: email,
+          })
+            .then(() => {
               // Add user to users database:
-              database.ref('usernames/').set({
-                [username]: authUser.user.uid
-              })
+              database.ref(`usernames/${username}`).set({
+                userId: authUser.user.uid
+              }).then(() => {
+                // Set user username in Firebase:
+                authUser.user.updateProfile({
+                  displayName: username,
+                }).then(() => {
+                  history.push('/home')
+                }).catch(function(error) {
+                  console.log(error)
+                })
 
-              // Set user username in Firebase:
-              authUser.user.updateProfile({
-                username: username,
-              }).then(function() {
-                // Update successful.
-              }).catch(function(error) {
-                console.log(error)
-              })
-              history.push('/home')
+              }).catch(err => console.log(err))
             })
-          })
-          .catch(error => {
-            that.setState(byPropKey('error', error))
-          })
-      }).catch(error => {
-      that.setState(byPropKey('error', error))
-    })
+            .catch(error => {
+              that.setState(byPropKey('error', error))
+            })
+        }).catch(error => {
+        that.setState(byPropKey('error', error))
+      })
     event.preventDefault()
   }
 
@@ -144,9 +154,11 @@ class RegisterForm extends React.Component {
             label="Потребителско име"
             className={classes.textField}
             onChange={event => this.setState(byPropKey('username', event.target.value))}
-            validators={['required', 'isUsernameLengthMin', 'isUsernameLengthMax', 'isUsername']}
-            errorMessages={['Въведете потребителско име!', 'Потребителското име трябва да е поне 3 символа',
-              'Потребителското име не трябва да е повече от 15 символа', 'Позволени са само малки латински букви, цифри, тире, долна черта!']}
+            validators={['required', 'isUsernameLengthMin', 'isUsernameLengthMax', 'isUsername', 'isUsernameUsed']}
+            errorMessages={['Въведете потребителско име!', 'Потребителското име трябва да е поне 3 символа'
+              ,'Потребителското име не трябва да е повече от 15 символа'
+              ,'Позволени са само малки латински букви, цифри, тире, долна черта!'
+            ,'Потребителското име е заето!']}
             margin="normal"
           />
         <TextValidator

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import MainComponent from './MainComponent'
-import {auth} from '../Firebase'
+import { auth, database } from '../Firebase'
 import AppContext from './AppContext'
 import { Switch, Route } from 'react-router-dom'
 import ChatWindow from './ChatWindow'
@@ -18,7 +18,10 @@ class App extends Component {
     auth.onAuthStateChanged(user => {
       if (user) {
         // Store current user info in Session Storage
-        sessionStorage.setItem('displayName', user.username)
+        const ref = database.ref(`/users/${user.uid}`)
+        ref.once('value', data => {
+          sessionStorage.setItem('username', data.val().username)
+        })
         sessionStorage.setItem('userId', user.uid)
         this.setState({ authUser: user })
       } else {
