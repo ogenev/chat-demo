@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography'
 import Moment from 'react-moment';
 import 'moment/locale/bg';
 import { Schedule, AttachMoney, Redeem, Announcement } from '@material-ui/icons'
-import {database} from '../../Firebase'
 
 
 const styles = theme => ({
