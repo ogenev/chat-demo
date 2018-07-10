@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 import {database} from '../../Firebase/index'
 import UserName from './UserName'
 import UserAddress from './UserAddress'
+import UserCity from './UserCity'
 import UserWebsite from './UserWebsite'
 import UserPhone from './UserPhone'
 import UserPresentation from './UserPresentation'
@@ -17,6 +18,7 @@ class UserProfile extends React.Component {
   state = {
     UserId: null,
     address: null,
+    city: null,
     website: null,
     phone: null,
     presentation: null
@@ -32,6 +34,7 @@ class UserProfile extends React.Component {
     // If database.ref returns undefined, set state to ""
       .then(snapshot => {
         let userDataFirebase = [snapshot.val().address,
+          snapshot.val().city,
           snapshot.val().website,
           snapshot.val().phone,
           snapshot.val().presentation
@@ -42,14 +45,15 @@ class UserProfile extends React.Component {
             return userDataReady[i] = data
           }
           else {
-            return userDataReady[i] = ""
+            return userDataReady[i] = null
           }
         })
 
       this.setState({address: userDataReady[0],
-      website: userDataReady[1],
-      phone: userDataReady[2],
-      presentation: userDataReady[3] })
+        city: userDataReady[1],
+      website: userDataReady[2],
+      phone: userDataReady[3],
+      presentation: userDataReady[4] })
       })
   }
 
@@ -67,6 +71,7 @@ class UserProfile extends React.Component {
   handleUpload = () => {
     database.ref(`users/${this.state.UserId}`).update({
       address: this.state.address,
+      city: this.state.city,
       website: this.state.website,
       phone: this.state.phone,
       presentation: this.state.presentation
@@ -80,6 +85,7 @@ class UserProfile extends React.Component {
             <form className={classes.container} noValidate autoComplete="off" onSubmit={this.submitChanges}>
               <UserName />
               <UserAddress address={this.state.address} handleChange={this.handleChange} />
+              <UserCity city={this.state.city} handleChange={this.handleChange} />
               <UserWebsite website={this.state.website} handleChange={this.handleChange} />
               <UserPhone phone={this.state.phone} handleChange={this.handleChange} />
               <UserPresentation presentation={this.state.presentation} handleChange={this.handleChange} />

@@ -109,7 +109,7 @@ class Cards extends React.Component {
                   <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} variant="subheading">{offer.description}</Typography>
                 </div>
                 : <div> <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}} variant="title">{offer.offerName}</Typography>
-                  <Typography style={{color: 'green', textAlign: 'right', float: 'right', fontWeight: 'bold'}} variant="title">{offer.promoPrice/100} ??.</Typography>
+                  <Typography style={{color: 'green', textAlign: 'right', float: 'right', fontWeight: 'bold'}} variant="title">{offer.promoPrice/100} лв.</Typography>
                   <Typography style={{textAlign: 'right', float: 'right'}} variant="subheading"> </Typography>
                   <Typography style={{color: 'red', marginBottom: 'auto', display: 'none'}} variant="title">YES </Typography>
                   <Typography style={{color: 'EEE', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minHeight: '1.5em'}} variant="subheading">{offer.description}</Typography>

@@ -25,6 +25,7 @@ class AddService extends React.Component {
       hideInputs: false,
       timeStamp: null,
       showBtn: true,
+      username: sessionStorage.getItem('username'),
       UserId: sessionStorage.getItem('userId'),
       offerName: "",
       price: "",
@@ -180,6 +181,7 @@ class AddService extends React.Component {
       discount: this.state.discount,
       discountPercent: this.state.discountPercent,
       url: this.state.url,
+      username: this.state.username,
       timeStamp: this.state.timeStamp
     }).then(this.resetState())
   }

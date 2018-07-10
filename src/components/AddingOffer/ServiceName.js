@@ -27,6 +27,7 @@ class ServiceName extends React.Component {
         className={classes.textField}
         margin='normal'
         disabled={this.props.hideInputs}
+        multiline
       />
     )
   }
