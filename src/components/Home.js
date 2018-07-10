@@ -2,9 +2,7 @@ import React from 'react'
 import Cards from './Cards/Cards'
 
 class Home extends React.Component {
-
-
-  render() {
+  render () {
     return (
       <div>
         <Cards />
@@ -14,4 +12,3 @@ class Home extends React.Component {
 }
 
 export default Home
-
