@@ -10,9 +10,6 @@ import 'moment/locale/bg';
 import { Schedule, AttachMoney, Redeem, Announcement } from '@material-ui/icons'
 
 
-
-
-
 const styles = theme => ({
   icon: {
     margin: theme.spacing.unit,
@@ -28,7 +25,8 @@ class OfferView extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-      offer: null
+      offer: null,
+      sellerPhone: ""
     }
   }
 
@@ -36,12 +34,25 @@ class OfferView extends React.Component {
   componentDidMount() {
     if (this.props.location.state !== undefined) {
       this.setState({offer: this.props.location.state.offer})
+      database.ref(`users/${this.props.location.state.offer.UserId}/phone`).once('value')
+        .then(snapshot => {
+          let sellerPhone = snapshot.val()
+          this.setState({sellerPhone: sellerPhone})
+        })
     }
     else {
       database.ref(`offers/services/${this.props.match.params.id}`).once('value')
         .then(snapshot => {
           let offer = snapshot.val()
-          this.setState({offer: offer})
+          this.setState({offer: offer},
+            //callback to set User related states only after offerstate is ready
+            () => {
+            database.ref(`users/${this.state.offer.UserId}/phone`).once('value')
+              .then(snapshot => {
+                let sellerPhone = snapshot.val()
+                this.setState({sellerPhone: sellerPhone})
+              })
+          })
         })
     }
   }
@@ -53,6 +64,7 @@ class OfferView extends React.Component {
       return null
     }
     else {
+      console.log(this.state.offer)
       return (
         <div>
           <div style={{
@@ -110,6 +122,10 @@ class OfferView extends React.Component {
               <Announcement className={classes.icon}/>
             <Typography style={{color: 'EEE'}} variant="subheading">{currentOffer.description}
             </Typography>
+            <div>
+              <Typography style={{color: 'EEE'}} variant="subheading">{this.state.sellerPhone}
+              </Typography>
+            </div>
             </div>
           </div>
           <button style={{position: 'absolute',
