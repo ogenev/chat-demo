@@ -23,7 +23,6 @@ class UserName extends React.Component {
 
   render () {
     const {classes} = this.props
-    const displayName = sessionStorage.getItem('displayName')
 
     return (
       <Fragment>
@@ -31,8 +30,8 @@ class UserName extends React.Component {
             <TextField
             className={classes.margin}
             id="input-with-icon-textfield"
-            label="Име"
-            value={displayName}
+            label="потребител"
+            value={this.props.username || ""}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

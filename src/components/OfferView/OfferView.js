@@ -35,10 +35,10 @@ class OfferView extends React.Component {
     super(props);
     this.state= {
       offer: null,
-      sellerPhone: null,
-      sellerCity: null,
-      sellerAddress: null,
-      sellerWebsite: null
+      sellerPhone: "Не е посочен",
+      sellerCity: "Не е посочен",
+      sellerAddress: "Не е посочен",
+      sellerWebsite: "Не е посочен"
     }
   }
 
@@ -55,7 +55,7 @@ class OfferView extends React.Component {
         console.log(userDataFirebase)
         let SellerData =[]
         SellerData = userDataFirebase.map((data, i) => {
-          if (data !== undefined) {
+          if (data !== undefined && data !== "") {
             return SellerData[i] = data
           }
           else {
@@ -96,7 +96,7 @@ class OfferView extends React.Component {
       console.log(this.state)
       return (
         <div>
-        <div style={{paddingBottom: '2em', overflow: 'scroll', height: '92vh'}}>
+        <div style={{paddingBottom: '3em', overflow: 'scroll', height: '92vh'}}>
           <div style={{
             maxWidth: '24em', marginLeft: 'auto',
             marginRight: 'auto'
@@ -168,6 +168,12 @@ class OfferView extends React.Component {
               <Typography style={{color: 'EEE'}} variant="subheading">{this.state.sellerWebsite}
               </Typography>
             </div>
+          </div>
+          <div style={{width: '90%', margin: 'auto', border:'3px solid #eee', marginBottom: '1em'}}>
+            <Typography style={{color: 'EEE', textAlign: 'center'}} variant="subheading">Виж профила и всички оферти от
+              <span style={{color: 'blue'}}> {currentOffer.username}
+              </span>
+            </Typography>
           </div>
         </div>
           <div style={chatButtonPlace}>

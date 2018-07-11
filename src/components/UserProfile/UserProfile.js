@@ -17,6 +17,7 @@ const styles = ({
 class UserProfile extends React.Component {
   state = {
     UserId: null,
+    username: null,
     address: null,
     city: null,
     website: null,
@@ -26,8 +27,9 @@ class UserProfile extends React.Component {
 
   componentDidMount () {
     let currentUserId = sessionStorage.getItem('userId')
+    let currentUserName= sessionStorage.getItem('username')
     this.setState({
-      UserId: currentUserId,
+      UserId: currentUserId, username: currentUserName
     })
 
     database.ref(`users/${currentUserId}/`).once('value')
@@ -45,7 +47,7 @@ class UserProfile extends React.Component {
             return userDataReady[i] = data
           }
           else {
-            return userDataReady[i] = null
+            return userDataReady[i] = ""
           }
         })
 
@@ -83,7 +85,7 @@ class UserProfile extends React.Component {
 
     return (
             <form className={classes.container} noValidate autoComplete="off" onSubmit={this.submitChanges}>
-              <UserName />
+              <UserName username={this.state.username} handleChange={this.handleChange}/>
               <UserAddress address={this.state.address} handleChange={this.handleChange} />
               <UserCity city={this.state.city} handleChange={this.handleChange} />
               <UserWebsite website={this.state.website} handleChange={this.handleChange} />

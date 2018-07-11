@@ -41,6 +41,10 @@ class AddService extends React.Component {
     this.resizeImages = this.resizeImages.bind(this)
   }
 
+  componentDidMount() {
+    console.log(Object.keys(this.state.url).length)
+  }
+
   createOffer = (event) => {
     event.preventDefault()
     this.setState({showBtn: false,
@@ -72,7 +76,7 @@ class AddService extends React.Component {
       discount: false,
       discountPercent: 0,
       description: "",
-      images: [],
+      images: {},
       url: 'https://firebasestorage.googleapis.com/v0/b/chat-test-90ab1.appspot.com/o/noimage.png?alt=media&token=97bed2e7-3ac2-436b-a0c1-0224a14b3d60',
       offerId: shortid.generate(),
       timeStamp: null
@@ -189,7 +193,7 @@ class AddService extends React.Component {
   handleUpload = (blobs) => {
 
     // Uploading blobs(images) to Firebase Storage
-      this.setState({url: []}, () => {
+      this.setState({url: {}}, () => {
 
         let imagePromise = (blob) => {
           // Generate random id for the image
@@ -209,11 +213,13 @@ class AddService extends React.Component {
             storage.ref('images').child(imageId)
             uploadTask.snapshot.ref.getDownloadURL()
               .then(newUrl => {
-                this.setState({url: [...this.state.url, newUrl]},
+                let urlObject = this.state.url
+                urlObject[Object.keys(urlObject).length] = newUrl
+                this.setState({url: urlObject},
                   () => {
 
                   // When all blobs are uploaded, go to database upload
-                  if (this.state.url.length === blobs.length) {
+                  if (Object.keys(urlObject).length === blobs.length) {
                     this.databaseUpload()
                   }
                 })
