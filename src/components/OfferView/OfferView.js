@@ -1,13 +1,14 @@
-import React from 'react';
-import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext, } from 'pure-react-carousel';
-import 'pure-react-carousel/dist/react-carousel.es.css';
+import React from 'react'
+import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext, } from 'pure-react-carousel'
+import 'pure-react-carousel/dist/react-carousel.es.css'
 import {database} from '../../Firebase/index'
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
-import Moment from 'react-moment';
+import Moment from 'react-moment'
 import 'moment/locale/bg';
 import { Schedule, AttachMoney, Redeem, Announcement, Call, LocationCity, LocationOn, InsertLink } from '@material-ui/icons'
+import Button from '@material-ui/core/Button'
 
 
 const chatButtonPlace = {
@@ -28,7 +29,7 @@ const styles = theme => ({
     marginLeft: '0%',
     marginRight: '3%',
   },
-});
+})
 
 class OfferView extends React.Component {
   constructor(props) {
@@ -52,10 +53,9 @@ class OfferView extends React.Component {
           snapshot.val().address,
           snapshot.val().website
         ]
-        console.log(userDataFirebase)
         let SellerData =[]
         SellerData = userDataFirebase.map((data, i) => {
-          if (data !== undefined && data !== "") {
+          if (data && data !== "") {
             return SellerData[i] = data
           }
           else {
@@ -71,7 +71,7 @@ class OfferView extends React.Component {
 
 
   componentDidMount() {
-    if (this.props.location.state !== undefined) {
+    if (this.props.location.state) {
       this.setState({offer: this.props.location.state.offer}, () => {this.addSellerInfo()})
 
     }
@@ -89,7 +89,7 @@ class OfferView extends React.Component {
   render() {
     const { classes } = this.props;
     let currentOffer = this.state.offer
-    if (this.state.offer === null) {
+    if (!this.state.offer) {
       return null
     }
     else {
@@ -177,7 +177,7 @@ class OfferView extends React.Component {
           </div>
         </div>
           <div style={chatButtonPlace}>
-            <button style={{position: 'relative',
+            <Button style={{position: 'relative',
               backgroundColor: 'green',
               color: 'white',
               width: '100%',
@@ -188,16 +188,16 @@ class OfferView extends React.Component {
               borderRadius: '5px',
               textAlign: 'center'}} >
               Чат с търговеца
-            </button>
+            </Button>
           </div>
         </div>
-      );
+      )
     }
   }
 }
 
 OfferView.propTypes = {
   classes: PropTypes.object.isRequired,
-};
+}
 
-export default withStyles(styles)(OfferView);
+export default withStyles(styles)(OfferView)
