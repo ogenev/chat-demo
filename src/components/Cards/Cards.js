@@ -97,7 +97,7 @@ class Cards extends React.Component {
             <Typography style={{color: 'EEE', width: '95%', marginLeft: 'auto', marginTop: 'auto'}} variant="body1" >Пешо</Typography>
             <CardMedia style={cardMedia}
                        className={classes.media}
-                       image={offer.url[0]}
+                       image={offer.url[Object.keys(offer.url)[0]]}
             />
             <div style={textArea}>
               {offer.price !== offer.promoPrice

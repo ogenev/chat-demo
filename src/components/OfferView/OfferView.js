@@ -93,7 +93,7 @@ class OfferView extends React.Component {
       return null
     }
     else {
-      console.log(this.state)
+      console.log(this.state.offer.UserId)
       return (
         <div>
         <div style={{paddingBottom: '3em', overflow: 'scroll', height: '92vh'}}>
