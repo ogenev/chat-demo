@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import MainComponent from './MainComponent'
 import { auth, database } from '../Firebase'
+import firebase from 'firebase/app'
 import AppContext from './AppContext'
 import { Switch, Route } from 'react-router-dom'
 import ChatWindow from './ChatWindow'
@@ -17,6 +18,7 @@ class App extends Component {
   componentDidMount () {
     auth.onAuthStateChanged(user => {
       if (user) {
+        const lastOnlineRef = database.ref(`users/${user.uid}/lastOnline`)
         // Store current user info in Session Storage
         const ref = database.ref(`/users/${user.uid}`)
         ref.once('value', data => {
@@ -24,10 +26,23 @@ class App extends Component {
         })
         sessionStorage.setItem('userId', user.uid)
         this.setState({ authUser: user })
+
+        // Set user status to online if logged-in
+        const connectedRef = database.ref('.info/connected')
+        connectedRef.on('value', function (snap) {
+          if (snap.val() === true) {
+            lastOnlineRef.set('online')
+            // When user disconnect, update the last time user was seen online
+            // When user log out, the update function is in the logout component(button)
+            lastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP)
+          }
+        })
       } else {
         this.setState({ authUser: null })
       }
-    })
+    }
+
+    )
   }
 
   render () {

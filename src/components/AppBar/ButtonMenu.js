@@ -1,12 +1,12 @@
-// Button menu when user is logged in
-
 import React from 'react'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import { auth } from '../../Firebase'
 import Link from "react-router-dom/Link"
+import LogoutButton from './LogoutButton'
+
+// Button menu when user is logged in
 
 class ButtonMenu extends React.Component {
   state = {
@@ -50,10 +50,7 @@ class ButtonMenu extends React.Component {
           onClose={this.handleClose}
         >
           <MenuItem component={Link} to="/myprofile">Моят Профил</MenuItem>
-          <MenuItem component={Link} to="/" onClick={() => (auth.signOut().then(function () {
-          }).catch(function (error) {
-            console.log(error)
-          }))}>Излез</MenuItem>
+          <LogoutButton />
         </Menu>
       </div>
     )
