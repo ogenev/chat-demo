@@ -6,9 +6,6 @@ import PropTypes from 'prop-types'
 class ChatInputContainer extends React.Component {
   constructor (props) {
     super(props)
-
-    this.userId = sessionStorage.getItem('userId')
-    this.senderName = sessionStorage.getItem('displayName')
     this.onSend = this.onSend.bind(this)
   }
 
@@ -22,10 +19,10 @@ class ChatInputContainer extends React.Component {
     const now = new Date().getTime()
     if (this.props.allMessages === 0) {
       const chatId = this.props.chatId
-      database.ref(`users/${this.userId}/activeThreads/${chatId}`).set({
+      database.ref(`users/${this.props.userId}/activeThreads/${chatId}`).set({
         threadId: chatId
       }).then(
-        database.ref(`users/${this.props.createdUid}/activeThreads/${chatId}`).set({
+        database.ref(`users/${this.props.chatWith}/activeThreads/${chatId}`).set({
           threadId: chatId
         }).catch(err => console.log(err))
       )
@@ -34,19 +31,18 @@ class ChatInputContainer extends React.Component {
       // Need to fix the meta
       database.ref(`chatThreadMeta/${chatId}`).set({
         createdAt: now,
-        startedByUserId: this.userId,
+        startedByUserId: this.props.userId,
         threadId: chatId,
-        receivedByUserId: this.props.createdUid
+        receivedByUserId: this.props.chatWith
       }).catch(err => console.log(err))
     }
     // Get massage from ChatInput and send it to database:
     let messageData = {
-      senderId: this.userId,
-      senderName: this.senderName,
-      receiverId: this.props.createdUid,
+      senderId: this.props.userId,
+      senderUsername: this.props.senderUsername,
+      receiverId: this.props.chatWith,
       chatMessage: message,
       chatTimestamp: now
-      // order: -1 * now
     }
     // Database path:
     // chatThread/threadId(generateChatId)/messageId(firebase generated)/messageData
@@ -63,7 +59,7 @@ class ChatInputContainer extends React.Component {
 }
 
 ChatInputContainer.propTypes = {
-  createdUid: PropTypes.string.isRequired,
+  chatWith: PropTypes.string.isRequired,
   allMessages: PropTypes.number.isRequired,
   chatRef: PropTypes.object.isRequired,
   chatId: PropTypes.string.isRequired

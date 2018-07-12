@@ -14,16 +14,17 @@ class ChatWindow extends React.Component {
     }
 
     this.userId = sessionStorage.getItem('userId')
+    this.userUsername = sessionStorage.getItem('username')
 
-    this.createdUid = this.props.location.state.createdUid
+    this.chatWith = this.props.location.state.chatWith
 
     this.chatRef = database.ref().child(`/chatThreads/${this.generateChatId()}`)
     this.chatRefData = this.chatRef.orderByChild('orders')
     this.listenForMessages = this.listenForMessages.bind(this)
   }
   generateChatId () {
-    if (this.userId > this.createdUid) return `${this.userId}-${this.createdUid}`
-    else return `${this.createdUid}-${this.userId}`
+    if (this.userId > this.chatWith) return `${this.userId}-${this.chatWith}`
+    else return `${this.chatWith}-${this.userId}`
   }
 
   componentDidMount () {
@@ -55,7 +56,9 @@ class ChatWindow extends React.Component {
         <ChatOfferPanel />
         <AllChatMessages messages={this.state.allMessages} />
         <ChatInputContainer
-          createdUid={this.createdUid}
+          userId={this.userId}
+          senderUsername={this.userUsername}
+          chatWith={this.chatWith}
           allMessages={this.state.allMessages.length}
           chatRef={this.chatRef}
           chatId={this.generateChatId()} />

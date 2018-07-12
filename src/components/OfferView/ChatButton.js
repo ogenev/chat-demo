@@ -21,7 +21,7 @@ class ChatButton extends React.Component {
     } else {
       this.props.history.push({
         pathname: '/chat',
-        state: { createdUid: this.props.createdUid
+        state: { chatWith: this.props.createdUid
         }
       })
     }

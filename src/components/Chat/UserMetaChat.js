@@ -8,11 +8,12 @@ class UserMetaChat extends React.Component {
     super(props)
 
     this.state = {
-      offerCreator: ''
+      chatWith: ''
     }
     // Set database reference for the meta data for the chat thread
 
     this.metaRef = database.ref(`/chatThreadMeta/${this.props.threadId}`)
+    this.userId = this.props.authUser.uid
 
     this.onClick = this.onClick.bind(this)
   }
@@ -21,7 +22,11 @@ class UserMetaChat extends React.Component {
     this.metaRef.once('value')
       .then(snapshot => {
         if (snapshot.val()) {
-          this.setState({offerCreator: snapshot.val().receivedByUserId})
+          if (this.userId === snapshot.val().startedByUserId) {
+            this.setState({chatWith: snapshot.val().receivedByUserId})
+          } else {
+            this.setState({chatWith: snapshot.val().startedByUserId})
+          }
         }
       })
       .catch(err => console.log(err))
@@ -31,14 +36,14 @@ class UserMetaChat extends React.Component {
     // Send to the appropriate chatWindow when clicking on the thread list
     this.props.history.push({
       pathname: '/chat',
-      state: { createdUid: this.state.offerCreator }
+      state: { chatWith: this.state.chatWith }
     })
   }
 
   render () {
-    if (this.state.offerCreator) {
+    if (this.state.chatWith) {
       return (<ListItem button onClick={this.onClick} style={{border: 'outset', width: '80%'}}>
-          Chat with: {this.state.offerCreator}
+          Chat with: {this.state.chatWith}
       </ListItem>
       )
     } else {
