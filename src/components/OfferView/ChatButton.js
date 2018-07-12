@@ -1,18 +1,7 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
-import Icon from '@material-ui/core/Icon'
 import { withRouter } from 'react-router-dom'
-
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit
-  }
-})
 
 class ChatButton extends React.Component {
   constructor (props) {
@@ -39,18 +28,17 @@ class ChatButton extends React.Component {
   }
 
   render () {
-    const { classes } = this.props
     return (
-      <Button variant='contained' color='primary' className={classes.button} onClick={this.onClick}>
-        Чат
-        <Icon className={classes.rightIcon} />
+      <Button variant='contained' color='primary' onClick={this.onClick}>
+        Чат с търговеца
       </Button>
     )
   }
 }
 
 ChatButton.propTypes = {
-  classes: PropTypes.object.isRequired
+  authUser: PropTypes.object,
+  createdUid: PropTypes.string
 }
 
-export default withRouter(withStyles(styles)(ChatButton))
+export default withRouter(ChatButton)

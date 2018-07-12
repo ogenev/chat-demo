@@ -8,17 +8,8 @@ import Typography from '@material-ui/core/Typography'
 import Moment from 'react-moment'
 import 'moment/locale/bg';
 import { Schedule, AttachMoney, Redeem, Announcement, Call, LocationCity, LocationOn, InsertLink } from '@material-ui/icons'
-import Button from '@material-ui/core/Button'
-
-
-const chatButtonPlace = {
-  position: 'fixed',
-  left: '0',
-  bottom: '0',
-  width: '100%',
-  color: 'white',
-  textAlign: 'center'
-};
+import ChatButton from './ChatButton'
+import AppContext from '../AppContext'
 
 const styles = theme => ({
   icon: {
@@ -29,7 +20,27 @@ const styles = theme => ({
     marginLeft: '0%',
     marginRight: '3%',
   },
-})
+  chatButtonPlace: {
+    position: 'fixed',
+    left: '0',
+    bottom: '0',
+    width: '100%',
+    color: 'white',
+    textAlign: 'center'
+  },
+  chatButton: {
+   position: 'relative',
+   backgroundColor: 'green',
+   color: 'white',
+   width: '100%',
+   fontSize: '16px',
+   padding: '12px',
+   border: 'none',
+   cursor: 'pointer',
+   borderRadius: '5px',
+   textAlign: 'center'
+
+}})
 
 class OfferView extends React.Component {
   constructor(props) {
@@ -93,8 +104,7 @@ class OfferView extends React.Component {
       return null
     }
     else {
-      console.log(this.state.offer.UserId)
-      return (
+        return (
         <div>
         <div style={{paddingBottom: '3em', overflow: 'scroll', height: '92vh'}}>
           <div style={{
@@ -176,22 +186,18 @@ class OfferView extends React.Component {
             </Typography>
           </div>
         </div>
-          <div style={chatButtonPlace}>
-            <Button style={{position: 'relative',
-              backgroundColor: 'green',
-              color: 'white',
-              width: '100%',
-              fontSize: '16px',
-              padding: '12px',
-              border: 'none',
-              cursor: 'pointer',
-              borderRadius: '5px',
-              textAlign: 'center'}} >
-              Чат с търговеца
-            </Button>
-          </div>
+          <AppContext.Consumer>
+            {(context) => {
+              // createdUid is hard coded for the user who created the offer
+              return (
+                <div className={classes.chatButtonPlace}>
+                  <ChatButton className={classes.chatButton} authUser={context.authUser} createdUid={currentOffer.UserId} />
+                </div>
+              )
+            }}
+          </AppContext.Consumer>
         </div>
-      )
+          )
     }
   }
 }
