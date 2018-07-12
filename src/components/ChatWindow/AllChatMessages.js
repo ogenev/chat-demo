@@ -22,7 +22,9 @@ class AllChatMessages extends React.Component {
       return (
         <ChatMessage
           key={i}
-          senderName={message.senderName}
+          userId={this.props.userId}
+          senderId={message.senderId}
+          senderUsername={message.senderUsername}
           chatMessage={message.chatMessage}
           chatTimestamp={message.chatTimestamp}
         />

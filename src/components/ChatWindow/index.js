@@ -50,11 +50,15 @@ class ChatWindow extends React.Component {
   }
 
   render () {
+    const userId = this.userId
     return (
       <Fragment>
         <ChatAppBar />
         <ChatOfferPanel />
-        <AllChatMessages messages={this.state.allMessages} />
+        <AllChatMessages
+          messages={this.state.allMessages}
+          userId={userId}
+        />
         <ChatInputContainer
           userId={this.userId}
           senderUsername={this.userUsername}
