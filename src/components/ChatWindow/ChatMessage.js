@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import Timestamp from 'react-timestamp'
+import Moment from 'react-moment'
+import 'moment/locale/bg'
 
 const styles = () => ({
   message: {
@@ -36,8 +37,6 @@ const styles = () => ({
 class ChatMessage extends React.Component {
   render () {
     const { classes } = this.props
-    let time = this.props.chatTimestamp.toString()
-    let newTime = Number(time.substring(0, time.length - 3))
 
     return (
       <div className={classes.message}>
@@ -47,7 +46,9 @@ class ChatMessage extends React.Component {
           </div>
           <div className={classes.chatTimestamp}>
             <div>
-              <Timestamp time={newTime} autoUpdate />
+              <Moment locale="bg" fromNow>
+                {this.props.chatTimestamp}
+              </Moment>
             </div>
           </div>
         </div>
