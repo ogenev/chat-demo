@@ -1,2 +1,1 @@
-React + Material-UI + Firebase
-All rights reserved!
+React + Material-UI + Firebase Chat App
