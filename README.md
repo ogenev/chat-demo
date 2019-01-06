@@ -1,1 +1,1 @@
-React + Material-UI + Firebase Chat App
+ReactJS + Material-UI + Google Firebase Chat App
